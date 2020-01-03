@@ -30,7 +30,7 @@ void    get_m_env(char **env)
 
 void    display_prompt(void)
 {
-    ft_putstr("$BeLHaTHo$>>");
+    ft_putstr("&my$sh$>>");
 }
 
 t_input         *create_args(void)
@@ -80,24 +80,29 @@ int     main(int ac, char **av, char **env)
 {
     int         i;
     t_input     *input;
+    char        **cmds;
+    t_input     *tt;
     i = 0;
+
+    cmds = NULL;
     input = NULL;
     get_m_env(env);
     while (1)
     {   
         display_prompt();
         get_input(&input);
-        /*while(input)
+      //  tt = input;
+       /* while(input)
         {
             printf("|%c|\n", input->c);
             input = input->next;
         }*/
-        if(!input)
-            free(input);
+        cmds = ft_lsttoarr(input);
+   printf("|||%s|\n",cmds[0]);
+     //   if(!input)
+      //      free(input);
+
     }
-    
-
-
 
 /*    while (m_env[i])
     {

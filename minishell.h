@@ -13,4 +13,15 @@ typedef struct          s_input
     struct s_input      *next;
 }                       t_input;
 
+/*
+typedef struct minishell
+{
+    t_input     *commads;
+
+};
+*/
+char	**ft_lstsplit(t_input **s, char c);
+char    **ft_lsttoarr(t_input *input);
+
+
 #endif
