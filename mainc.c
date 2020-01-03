@@ -1,7 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mainc.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/03 15:18:47 by belhatho          #+#    #+#             */
+/*   Updated: 2020/01/03 15:18:56 by belhatho         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 # include "minishell.h"
-
-char    **m_env;
 
 int     dp_len(char **env)
 {
@@ -58,22 +67,25 @@ void            ft_alloc(t_input **param, t_input **curr, t_input **tt)
         }
 }
 
-void    get_input(t_input **input)
+t_input    *get_input(void)
 {
-    char    buff;
-    int     nb_oct;
+    char        buff;
+    int         nb_oct;
+    t_input     *input;
     t_input     *tt;
     t_input     *curr;
 
     tt = NULL;
+    input = NULL;
     curr = create_args();
     while ((nb_oct = read(0, &buff, 1)) && buff != '\n')
     {
         curr->c = buff;
-        ft_alloc(input, &curr, &tt);
+        ft_alloc(&input, &curr, &tt);
     }
     free(curr);
-    *input = tt;
+    input = tt;
+    return (input);
 }
 
 int     main(int ac, char **av, char **env)
@@ -81,7 +93,6 @@ int     main(int ac, char **av, char **env)
     int         i;
     t_input     *input;
     char        **cmds;
-    t_input     *tt;
     i = 0;
 
     cmds = NULL;
@@ -90,26 +101,31 @@ int     main(int ac, char **av, char **env)
     while (1)
     {   
         display_prompt();
-        get_input(&input);
-      //  tt = input;
-       /* while(input)
+        if (!(input = get_input()))
         {
-            printf("|%c|\n", input->c);
-            input = input->next;
-        }*/
+            free (input);
+            continue;
+        }
         cmds = ft_lsttoarr(input);
-   printf("|||%s|\n",cmds[0]);
-     //   if(!input)
-      //      free(input);
+        printf("|| %s ||\n",cmds[0]);
+        ft_check_cmds(cmds);
+        free (input);
+        free(cmds);
 
-    }
 
-/*    while (m_env[i])
+
+
+    
+    
+    /*while (m_env[i])
     {
         printf("%s\n",m_env[i]);
         i++;
+    }*/
     }
-*/
+
+
+
     return (0);
     
 }
