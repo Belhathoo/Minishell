@@ -51,24 +51,68 @@ char    **ft_lsttoarr(t_input *input)
 	return (cmds);
 }
 
+void	display_m_env(void)
+{
+	int		i;
+
+	i = 0;
+	while (m_env[i])
+    {
+        ft_putstr(m_env[i]);
+		ft_putchar('\n');
+        i++;
+    }
+}
+
+int		is_builtin(char **input)
+{
+	if (ft_strequ(input[0], "exit"))
+	{
+		if (dp_len(input) == 1)
+			return (-1);
+		else
+			ft_putstr("exit : Exxpression Syntax.");
+		return (0);
+	}
+	if (ft_strequ(input[0], "env"))
+	{
+		if (dp_len(input) == 1)
+		{
+			display_m_env();
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int     ft_check_cmds(char **cmds)
 {
 	char    **input;
+	int		x;
 	int     i;
+	int		j;
 
 	i = 0;
-//	input = (char ***)malloc(sizeof(char **));
 	while (cmds[i])
 	{
 		input = ft_strsplits(cmds[i]);
+		j = 0;
+		while(input[j])
+		{
+			printf("**%s**\n",input[j]);
+			j++;
+		}
+		if ((x = is_builtin(input)) == -1)
+		{
+			free_tab(&input);
+			return (-1);
+		}
+		
 		/// check 1st input & exec then ++ //
 		i++;
 	}
 	i = 0;
-	while(input[i])
-	{
-		printf("** %s **\n",input[i]);
-		i++;
-	}
+
+	return (1);
 }
 

@@ -22,6 +22,38 @@ int     dp_len(char **env)
     return (i);
 }
 
+void	free_tab(char ***tab)
+{
+	int		i;
+	char	**tmp;
+
+	tmp = *tab;
+	i = 0;
+	while (tmp[i])
+	{
+		ft_strdel(&tmp[i]);
+		i++;
+	}
+	free(tmp);
+	tmp = NULL;
+}
+
+void	ft_clean_lst(t_input **args)
+{
+	t_input	*h;
+	t_input	*n;
+
+	h = *args;
+	while (h)
+	{
+		n = h->next;
+		free(h);
+		h = n;
+	}
+	free(h);
+}
+
+
 void    get_m_env(char **env)
 {
     int i;
@@ -39,10 +71,10 @@ void    get_m_env(char **env)
 
 void    display_prompt(void)
 {
-    ft_putstr("&my$sh$>>");
+    ft_putstr("&My-Sh$>>");
 }
 
-t_input         *create_args(void)
+t_input         *create_maillon(void)
 {
     t_input *l;
 
@@ -55,13 +87,13 @@ void            ft_alloc(t_input **param, t_input **curr, t_input **tt)
 {
         if ((*param) == NULL)
         {
-                (*param) = create_args();
+                (*param) = create_maillon();
                 (*tt) = (*param);
                 (*param)->c = (*curr)->c;
         }
         else
         {
-                (*param)->next = create_args();
+                (*param)->next = create_maillon();
                 (*param)->next->c = (*curr)->c;
                 (*param) = (*param)->next;
         }
@@ -77,7 +109,7 @@ t_input    *get_input(void)
 
     tt = NULL;
     input = NULL;
-    curr = create_args();
+    curr = create_maillon();
     while ((nb_oct = read(0, &buff, 1)) && buff != '\n')
     {
         curr->c = buff;
@@ -107,12 +139,15 @@ int     main(int ac, char **av, char **env)
             continue;
         }
         cmds = ft_lsttoarr(input);
-        printf("||%s||\n",cmds[0]);
-        ft_check_cmds(cmds);
-            
-        
-        free (input);
-        free(cmds);   // !!free all !!
+//        printf("||%s||\n",cmds[0]);
+        if (ft_check_cmds(cmds) == -1)
+        {
+            free_tab(&cmds);
+            ft_clean_lst(&input);
+            break;
+        }
+        ft_clean_lst(&input);
+        free_tab(&cmds);
 
 
 

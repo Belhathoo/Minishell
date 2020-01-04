@@ -42,4 +42,9 @@ char    **ft_lsttoarr(t_input *input);
 int     ft_check_cmds(char **cmds);
 
 
+
+int     dp_len(char **env);
+void	free_tab(char ***tab);
+void	ft_clean_lst(t_input **args);
+
 #endif
