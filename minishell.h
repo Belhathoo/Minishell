@@ -39,7 +39,7 @@ char	**ft_lstsplit(t_input **s, char c);
 char    **ft_lsttoarr(t_input *input);
 
 
-ft_check_cmds(cmds);
+int     ft_check_cmds(char **cmds);
 
 
 #endif

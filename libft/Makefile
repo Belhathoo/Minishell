@@ -28,7 +28,7 @@ SRC +=	ft_strstr.c ft_strsub.c ft_strtrim.c ft_tolower.c
 SRC +=	ft_toupper.c ft_strlowcase.c ft_strcapitalize.c
 SRC +=  ft_swap.c ft_strrev.c ft_str_is_alpha.c ft_str_is_numeric.c
 SRC +=  ft_str_is_printable.c ft_str_is_uppercase.c ft_str_is_lowercase.c
-SRC +=  ft_nbr_size.c ft_word_size.c ft_nbr_words.c ft_atoi.c
+SRC +=  ft_nbr_size.c ft_word_size.c ft_nbr_words.c ft_atoi.c ft_splits.c
 
 
 OBJ = $(SRC:.c=.o)

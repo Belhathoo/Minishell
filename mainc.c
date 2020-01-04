@@ -107,10 +107,12 @@ int     main(int ac, char **av, char **env)
             continue;
         }
         cmds = ft_lsttoarr(input);
-        printf("|| %s ||\n",cmds[0]);
+        printf("||%s||\n",cmds[0]);
         ft_check_cmds(cmds);
+            
+        
         free (input);
-        free(cmds);
+        free(cmds);   // !!free all !!
 
 
 

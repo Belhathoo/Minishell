@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <string.h>
 
+# define SPA(x) (x == ' ' || x == '\t' || x == '\r' || x == '\f')
 # define BUFF_SIZE 10
 
 typedef struct	s_list
@@ -97,5 +98,5 @@ int				ft_str_is_lowercase(char *str);
 int				ft_str_is_alpha(char *str);
 int				ft_nbr_size(int *n, int *test, int *str_size);
 int				get_next_line(int fd, char **line);
-
+char			**ft_strsplits(char *s);
 #endif

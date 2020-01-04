@@ -14,75 +14,61 @@
 
 int     lstlen(t_input *l)
 {
-    int     size;
-    t_input *tt;
-    
-    size = 0;
-    tt = l;
-    while(tt)
-    {
-        size++;
-        tt = tt->next;
-    }
-    return (size);
+	int     size;
+	t_input *tt;
+
+	size = 0;
+	tt = l;
+	while(tt)
+	{
+		size++;
+		tt = tt->next;
+	}
+	return (size);
 }
 
 char    **ft_lsttoarr(t_input *input)
 {
-    t_input *tt;
-    char    *str;
-    char    **cmds;
-    int     i;
+	t_input *tt;
+	char    *str;
+	char    **cmds;
+	int     i;
 
-    i = 0;
-    tt = input;
-    if (!input)
-        return (NULL);
-    if (!(str = (char *)malloc(lstlen(input) + 1)))
-        return (NULL);
-    while (input)
-    {
-        str[i] = input->c;
-        i++;
-        input = input->next;
-    }
-    str[i] = '\0';
-    cmds = ft_strsplit(str, ';');
-    return (cmds);
-}
-
-char	**ft_strsplits(char const *s)
-{
-	int		i[3];
-	char	**new_s;
-
-	i[0] = 0;
-	i[2] = 0;
-	if (s == NULL)
+	i = 0;
+	tt = input;
+	if (!input)
 		return (NULL);
-	if (!(new_s = (char **)malloc((ft_nbr_words(s,) + 1) * sizeof(char*))))
+	if (!(str = (char *)malloc(lstlen(input) + 1)))
 		return (NULL);
-	while (s[i[2]])
+	while (input)
 	{
-		while (s[i[2]] == c && s[i[2]])
-			i[2]++;
-		if (s[i[2]])
-		{
-			i[1] = 0;
-			if (!(new_s[i[0]] = (char *)malloc(ft_word_size(s, c, i[2]) + 1)))
-				return (NULL);
-			while (s[i[2]] != c && s[i[2]])
-				new_s[i[0]][i[1]++] = s[i[2]++];
-			new_s[i[0]++][i[1]] = '\0';
-		}
+		str[i] = input->c;
+		i++;
+		input = input->next;
 	}
-	new_s[i[0]] = 0;
-	return (new_s);
+	str[i] = '\0';
+	cmds = ft_strsplit(str, ';');
+	return (cmds);
 }
 
-
-int     ft_check_cmds(cmds)
+int     ft_check_cmds(char **cmds)
 {
-    char    **input;
+	char    **input;
+	int     i;
+
+	i = 0;
+//	input = (char ***)malloc(sizeof(char **));
+	while (cmds[i])
+	{
+		input = ft_strsplits(cmds[i]);
+		/// check 1st input & exec then ++ //
+		i++;
+	}
+	i = 0;
+	while(input[i])
+	{
+		printf("** %s **\n",input[i]);
+		i++;
+	}
 }
 
