@@ -35,12 +35,21 @@ typedef struct minishell
 
 };
 */
+char    *get_var(char *name);
+void    *set_var(char *name, char *value);
+
+
 char	**ft_lstsplit(t_input **s, char c);
 char    **ft_lsttoarr(t_input *input);
+
+int     lstlen(t_input *l);
+
 
 
 int     ft_check_cmds(char **cmds);
 
+int     run_env(char **input);
+int		run_cd(char	**input);
 
 
 int     dp_len(char **env);

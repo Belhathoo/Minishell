@@ -125,6 +125,10 @@ int     main(int ac, char **av, char **env)
     int         i;
     t_input     *input;
     char        **cmds;
+
+    char    *pwd;
+	char	buff[4097];
+
     i = 0;
 
     cmds = NULL;
@@ -132,6 +136,8 @@ int     main(int ac, char **av, char **env)
     get_m_env(env);
     while (1)
     {   
+       	pwd = getcwd(buff, 4096);
+        printf("PWD: %s\n", pwd);
         display_prompt();
         if (!(input = get_input()))
         {
@@ -139,7 +145,6 @@ int     main(int ac, char **av, char **env)
             continue;
         }
         cmds = ft_lsttoarr(input);
-//        printf("||%s||\n",cmds[0]);
         if (ft_check_cmds(cmds) == -1)
         {
             free_tab(&cmds);
@@ -149,20 +154,11 @@ int     main(int ac, char **av, char **env)
         ft_clean_lst(&input);
         free_tab(&cmds);
 
-
-
-
-    
-    
-    /*while (m_env[i])
-    {
-        printf("%s\n",m_env[i]);
-        i++;
-    }*/
+        /*while (m_env[i])
+        {
+            printf("%s\n",m_env[i]);
+            i++;
+        }*/
     }
-
-
-
     return (0);
-    
 }

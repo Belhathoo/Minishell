@@ -13,6 +13,7 @@
 NAME = minishell
 
 SRCS = mainc.c extract_cmds.c ft_lstsplit.c
+SRCS += environment.c run_env.c run_cd.c run_setenv.c
 OBJS = $(SRCS:.c=.o)
 
 FLAGS = 

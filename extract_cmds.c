@@ -51,18 +51,6 @@ char    **ft_lsttoarr(t_input *input)
 	return (cmds);
 }
 
-void	display_m_env(void)
-{
-	int		i;
-
-	i = 0;
-	while (m_env[i])
-    {
-        ft_putstr(m_env[i]);
-		ft_putchar('\n');
-        i++;
-    }
-}
 
 int		is_builtin(char **input)
 {
@@ -75,13 +63,11 @@ int		is_builtin(char **input)
 		return (0);
 	}
 	if (ft_strequ(input[0], "env"))
-	{
-		if (dp_len(input) == 1)
-		{
-			display_m_env();
-			return (1);
-		}
-	}
+		return (run_env(input));
+//	if (ft_strequ(input[0], "setenv"))
+//		return (run_setenv(input));
+	if (ft_strequ(input[0], "cd"))
+		return (run_cd(input));
 	return (0);
 }
 
@@ -97,11 +83,12 @@ int     ft_check_cmds(char **cmds)
 	{
 		input = ft_strsplits(cmds[i]);
 		j = 0;
-		while(input[j])
+	/*	while(input[j])
 		{
-			printf("**%s**\n",input[j]);
+			printf("**%s**\t",input[j]);
 			j++;
 		}
+		printf("\n");*/
 		if ((x = is_builtin(input)) == -1)
 		{
 			free_tab(&input);
