@@ -136,8 +136,8 @@ int     main(int ac, char **av, char **env)
     get_m_env(env);
     while (1)
     {   
-       	pwd = getcwd(buff, 4096);
-        printf("PWD: %s\n", pwd);
+      	pwd = getcwd(buff, 4096);
+       printf("\n\t**PWD** %s\n", pwd);
         display_prompt();
         if (!(input = get_input()))
         {

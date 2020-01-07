@@ -36,7 +36,7 @@ typedef struct minishell
 };
 */
 char    *get_var(char *name);
-void    *set_var(char *name, char *value);
+void    set_var(char *name, char *value);
 
 
 char	**ft_lstsplit(t_input **s, char c);
