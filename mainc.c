@@ -96,6 +96,7 @@ t_input    *get_input(void)
     curr = create_maillon();
     while ((nb_oct = read(0, &buff, 1)) && buff != '\n')
     {
+        printf("%c\t", buff);
         curr->c = buff;
         ft_alloc(&input, &curr, &tt);
     }
@@ -121,7 +122,7 @@ int     main(int ac, char **av, char **env)
     while (1)
     {   
       	pwd = getcwd(buff, 4096);
-     //   printf("\n\t**PWD** %s\n", pwd);
+        printf("\n\t--PWD$ %s\n", pwd);
         display_prompt();
         if (!(input = get_input()))
         {
@@ -129,21 +130,19 @@ int     main(int ac, char **av, char **env)
             continue;
         }
         cmds = ft_lsttoarr(input);
+        while (cmds[i])
+        {
+            printf("|%s|\n", cmds[i]);
+            i++;
+        }
         if (ft_check_cmds(cmds) == -1)
         {
-            printf("\nQUITTING!\n");
             free_tab(&cmds);
             ft_clean_lst(&input);
             break;
         }
         ft_clean_lst(&input);
         free_tab(&cmds);
-
-        /*while (m_env[i])
-        {
-            printf("%s\n",m_env[i]);
-            i++;
-        }*/
     }
     return (0);
 }
