@@ -53,25 +53,9 @@ void	ft_clean_lst(t_input **args)
 	free(h);
 }
 
-
-void    get_m_env(char **env)
-{
-    int i;
-
-    i =0;
-    m_env = (char **)malloc(sizeof(char *) * (dp_len(env) + 1));
-    printf("\n\nenvlen = %d\n", dp_len(env));
-    while (env[i])
-    {
-        m_env[i] = ft_strdup(env[i]);
-        i++;
-    }
-   m_env[i] = NULL;
-}
-
 void    display_prompt(void)
 {
-    ft_putstr("&My-Sh$>>");
+    ft_putstr("my-sh>>$ ");
 }
 
 t_input         *create_maillon(void)
@@ -137,7 +121,7 @@ int     main(int ac, char **av, char **env)
     while (1)
     {   
       	pwd = getcwd(buff, 4096);
-       printf("\n\t**PWD** %s\n", pwd);
+     //   printf("\n\t**PWD** %s\n", pwd);
         display_prompt();
         if (!(input = get_input()))
         {
@@ -147,6 +131,7 @@ int     main(int ac, char **av, char **env)
         cmds = ft_lsttoarr(input);
         if (ft_check_cmds(cmds) == -1)
         {
+            printf("\nQUITTING!\n");
             free_tab(&cmds);
             ft_clean_lst(&input);
             break;

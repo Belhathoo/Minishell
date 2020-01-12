@@ -60,12 +60,12 @@ int		is_builtin(char **input)
 			return (-1);
 		else
 			ft_putstr("exit : Exxpression Syntax.");
-		return (0);
+		return (1);
 	}
 	if (ft_strequ(input[0], "env"))
 		return (run_env(input));
-//	if (ft_strequ(input[0], "setenv"))
-//		return (run_setenv(input));
+	if (ft_strequ(input[0], "setenv"))
+		return (run_setenv(input));
 	if (ft_strequ(input[0], "cd"))
 		return (run_cd(input));
 	return (0);
@@ -83,19 +83,12 @@ int     ft_check_cmds(char **cmds)
 	{
 		input = ft_strsplits(cmds[i]);
 		j = 0;
-	/*	while(input[j])
-		{
-			printf("**%s**\t",input[j]);
-			j++;
-		}
-		printf("\n");*/
 		if ((x = is_builtin(input)) == -1)
 		{
 			free_tab(&input);
 			return (-1);
 		}
-		
-		/// check 1st input & exec then ++ //
+		free_tab(&input);
 		i++;
 	}
 	i = 0;

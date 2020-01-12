@@ -17,7 +17,6 @@
 # include <stdio.h>
 # include "libft/libft.h"
 
-# define SPA(x) (x == ' ' || x == '\t' || x == '\r' || x == '\f')
 
 char    **m_env;
 
@@ -35,6 +34,10 @@ typedef struct minishell
 
 };
 */
+
+void    get_m_env(char **env);
+void	display_m_env(void);
+
 char    *get_var(char *name);
 void    set_var(char *name, char *value);
 
@@ -48,6 +51,7 @@ int     lstlen(t_input *l);
 
 int     ft_check_cmds(char **cmds);
 
+int     run_setenv(char **input);
 int     run_env(char **input);
 int		run_cd(char	**input);
 

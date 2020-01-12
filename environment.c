@@ -1,21 +1,36 @@
 
 # include "minishell.h"
 
-static void		realloc_env(int new_size)
+void    get_m_env(char **env)
+{
+    int i;
+
+    i =0;
+    m_env = (char **)malloc(sizeof(char *) * (dp_len(env) + 1));
+    while (env[i])
+    {
+        m_env[i] = ft_strdup(env[i]);
+        i++;
+    }
+   m_env[i] = NULL;
+}
+
+static char		**realloc_env(int new_size)
 {
 	char	**new;
 	int		i;
 
 	new = (char **)ft_memalloc(sizeof(char *) * (new_size + 1));
-	i = -1;
-	while (m_env[++i] && i < new_size)
+	i = 0;
+	while (m_env[i])
 	{
 		new[i] = ft_strdup(m_env[i]);
 		free(m_env[i]);
+		i++;
 	}
+	new[i + 1] = NULL;
 	free(m_env);
-	m_env = new;
-//	return (new);
+	return (new);
 }
 
 static int		is_first_word(char *s1, char *s2)
@@ -74,22 +89,25 @@ void	set_var(char *name, char *value)
 	char	*tmp;
 
 	pos = find_var_pos(name);
-	tmp = ft_strjoin("=", value);
+	if (value)
+     	tmp = ft_strjoin("=", value);
 	if (m_env[pos])
 	{
 		free(m_env[pos]);
-		if (value != NULL)
+		if (value)
 			m_env[pos] = ft_strjoin(name, tmp);
 		else
 			m_env[pos] = ft_strjoin(name, "=");
 	}
 	else
 	{
-		realloc_env(pos + 1);
-		if (value != NULL)
+		m_env = realloc_env(pos + 1);
+		if (value)
 			m_env[pos] = ft_strjoin(name, tmp);
 		else
 			m_env[pos] = ft_strjoin(name, "=");
 	}
-	free(tmp);
+//	printf("//m_env(pos)%d: %s\n", pos,  m_env[pos]);
+	if (value)
+     	free(tmp);
 }
