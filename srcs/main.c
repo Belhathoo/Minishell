@@ -38,15 +38,16 @@ void	free_tab(char ***tab)
 	tmp = NULL;
 }
 
-void	ft_clean_lst(t_input **args)
+void	ft_clean_lst(t_env **args)
 {
-	t_input	*h;
-	t_input	*n;
+	t_env	*h;
+	t_env	*n;
 
 	h = *args;
 	while (h)
 	{
 		n = h->next;
+        ft_strdel(&h->var);
 		free(h);
 		h = n;
 	}
@@ -57,18 +58,6 @@ void    display_prompt(void)
 {
     ft_putstr("my-sh>>$ ");
 }
-
-
-/*char       *get_input(void)
-{
-//    char        buff;
- //   int         nb_oct;
-    char        *input;
-
-    if(!get_next_line(0, &input))
-        return (NULL);
-    return (input);
-}*/
 
 int     main(int ac, char **av, char **env)
 {
@@ -81,26 +70,21 @@ int     main(int ac, char **av, char **env)
 
     cmds = NULL;
     input = NULL;
-    m_env = get_m_env(env);
+    get_m_env(env, &m_env);
+    //m_env = NULL;
     while (1)
     {   
       	pwd = getcwd(buff, 4096);
         printf("\n\t--PWD$ %s\n", pwd);
+   		//(m_env) ? printf("|%s|\n",m_env->var) : printf("No env!\n");
         display_prompt();
         if (!get_next_line(0, &input))
         {
             free (input);
             continue;
         }
-
         cmds = ft_strsplit(input, ';');;
-        /*i = 0;
-        while (cmds[i])
-        {
-            printf("HERE|%s|\n", cmds[i]);
-            i++;
-        }*/
-        if (ft_check_cmds(cmds, &m_env) == -1)
+        if (ft_check_cmds(cmds, m_env) == -1)
         {
             free_tab(&cmds);
             ft_strdel(&input);
@@ -109,5 +93,6 @@ int     main(int ac, char **av, char **env)
         ft_strdel(&input);
         free_tab(&cmds);
     }
+    ft_clean_lst(&m_env);
     return (0);
 }

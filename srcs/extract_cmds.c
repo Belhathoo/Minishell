@@ -28,7 +28,7 @@ int     lstlen(t_input *l)
 }
 
 
-int		is_builtin(char **input, t_env **m_env)
+int		is_builtin(char **input, t_env *m_env)
 {
 	if (ft_strequ(input[0], "exit"))
 	{
@@ -39,15 +39,15 @@ int		is_builtin(char **input, t_env **m_env)
 		return (1);
 	}
 	if (ft_strequ(input[0], "env"))
-		return (run_env(input, *m_env));
+		return (run_env(input, m_env));
 	if (ft_strequ(input[0], "setenv"))
 		return (run_setenv(input, m_env));
-	if (ft_strequ(input[0], "cd"))
-		return (run_cd(input, m_env));
+//	if (ft_strequ(input[0], "cd"))
+//		return (run_cd(input, m_env));
 	return (0);
 }
 
-int     ft_check_cmds(char **cmds, t_env **m_env)
+int     ft_check_cmds(char **cmds, t_env *m_env)
 {
 	char    **input;
 	int		x;

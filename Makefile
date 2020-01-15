@@ -6,26 +6,32 @@
 #    By: belhatho <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/30 20:21:59 by belhatho          #+#    #+#              #
-#    Updated: 2020/01/03 15:16:53 by belhatho         ###   ########.fr        #
+#    Updated: 2020/01/15 20:15:22 by belhatho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = mainc.c extract_cmds.c ft_lstsplit.c
-SRCS += environment.c run_env.c run_cd.c run_setenv.c
-OBJS = $(SRCS:.c=.o)
+SRC = main.c extract_cmds.c ft_lstsplit.c
+SRC += environment.c run_env.c run_cd.c run_setenv.c
 
-FLAGS = 
+SRCS = $(SRC:%=srcs/%)
+OBJS = $(SRC:%.c=objs/%.o)
 LIBFT = ./libft/ -lft
+
+FLAGS =  
+CREATE_OBJ = objs
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(CREATE_OBJ) $(OBJS)
 	@make -C libft
 	@gcc $(FLAGS) -o $(NAME) $(OBJS) -L $(LIBFT)
 
-%.o: %.c minishell.h libft/libft.h
+$(CREATE_OBJ):
+	@mkdir -p $@
+
+objs/%.o: srcs/%.c srcs/minishell.h libft/libft.h
 	@gcc $(FLAGS) -c $< -o $@
 
 clean:

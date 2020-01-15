@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-int    ft_chdir(char *path, int choix, t_env **m_env)
+/*int    ft_chdir(char *path, int choix, t_env *m_env)
 {
     char    *tmp;
     char    *pwd;
@@ -11,7 +11,7 @@ int    ft_chdir(char *path, int choix, t_env **m_env)
 	pwd = getcwd(buff, 4096);
     if (choix == 0)
     {
-    	tmp = get_var("HOME", *m_env);
+    	tmp = get_var("HOME", m_env);
 		chdir(tmp);
 		set_var("PWD", tmp, m_env);
 		if (strcmp(pwd, tmp))
@@ -20,7 +20,7 @@ int    ft_chdir(char *path, int choix, t_env **m_env)
     }
 	else if (choix == -1)
 	{
-		tmp = get_var("OLD_PWD", *m_env);
+		tmp = get_var("OLD_PWD", m_env);
 		if(chdir(tmp) == 0)
 	    {
 			printf("(-)LO%s\tOLD: %s\n", tmp, pwd);
@@ -52,12 +52,12 @@ int    ft_chdir(char *path, int choix, t_env **m_env)
 	return (0);
 }
 
-int		run_cd(char	**input, t_env **env)
+int		run_cd(char	**input, t_env *env)
 {
 	int		len;
 	t_env	*m_env;
 
-	m_env = *env;
+	m_env = env;
 	len = dp_len(input);
 	if (len == 1)
 	{
@@ -84,3 +84,4 @@ int		run_cd(char	**input, t_env **env)
 		ft_putstr("cd: Too many arguments.\n");
 	return (0);
 }
+*/
