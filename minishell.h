@@ -18,8 +18,6 @@
 # include "libft/libft.h"
 
 
-char    **m_env;
-
 
 typedef struct          s_input
 {
@@ -27,37 +25,36 @@ typedef struct          s_input
     struct s_input      *next;
 }                       t_input;
 
-/*
-typedef struct minishell
+typedef struct          s_env
 {
-    t_input     *commads;
+    char                *var;
+    struct s_env        *next;
+}                       t_env;
 
-};
-*/
 
-void    get_m_env(char **env);
-void	display_m_env(void);
 
-char    *get_var(char *name);
-void    set_var(char *name, char *value);
+
+t_env   *get_m_env(char **env);
+void	display_m_env(t_env *m_env);
+
+char    *get_var(char *name, t_env *m_env);
+void    set_var(char *name, char *value, t_env **m_env);
 
 
 char	**ft_lstsplit(t_input **s, char c);
 char    **ft_lsttoarr(t_input *input);
 
-int     lstlen(t_input *l);
 
 
+int     ft_check_cmds(char **cmds, t_env **m_env);
 
-int     ft_check_cmds(char **cmds);
-
-int     run_setenv(char **input);
-int     run_env(char **input);
-int		run_cd(char	**input);
+int     run_setenv(char **input, t_env **m_env);
+int     run_env(char **input, t_env *m_env);
+int		run_cd(char	**input, t_env **m_env);
 
 
 int     dp_len(char **env);
 void	free_tab(char ***tab);
 void	ft_clean_lst(t_input **args);
-
+int     lstlen(t_input *l);
 #endif

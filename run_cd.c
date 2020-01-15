@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-int    ft_chdir(char *path, int choix)
+int    ft_chdir(char *path, int choix, t_env **m_env)
 {
     char    *tmp;
     char    *pwd;
@@ -11,31 +11,31 @@ int    ft_chdir(char *path, int choix)
 	pwd = getcwd(buff, 4096);
     if (choix == 0)
     {
-    	tmp = get_var("HOME");
+    	tmp = get_var("HOME", *m_env);
 		chdir(tmp);
-		set_var("PWD", tmp);
+		set_var("PWD", tmp, m_env);
 		if (strcmp(pwd, tmp))
-			set_var("OLD_PWD", pwd);
+			set_var("OLD_PWD", pwd, m_env);
 		return (1);
     }
 	else if (choix == -1)
 	{
-		tmp = get_var("OLD_PWD");
+		tmp = get_var("OLD_PWD", *m_env);
 		if(chdir(tmp) == 0)
 	    {
 			printf("(-)LO%s\tOLD: %s\n", tmp, pwd);
-			set_var("PWD", tmp);
+			set_var("PWD", tmp, m_env);
 		    if (strcmp(pwd, tmp))
-				set_var("OLD_PWD", pwd);
+				set_var("OLD_PWD", pwd, m_env);
 			return (1);
 		}
 	}
 	else if (chdir(path) == 0)
 	{
 		tmp = getcwd(buff1, 4096);
-		set_var("PWD", tmp);
+		set_var("PWD", tmp, m_env);
 		if (strcmp(pwd, tmp))
-			set_var("OLD_PWD", pwd);
+			set_var("OLD_PWD", pwd, m_env);
 	    return (1);
 	}
 	else
@@ -52,31 +52,32 @@ int    ft_chdir(char *path, int choix)
 	return (0);
 }
 
-int		run_cd(char	**input)
+int		run_cd(char	**input, t_env **env)
 {
 	int		len;
-	char	*opwd;
+	t_env	*m_env;
 
+	m_env = *env;
 	len = dp_len(input);
 	if (len == 1)
 	{
-		ft_chdir("", 0);
+		ft_chdir("", 0, env);
 		return (1);
 	}
 	else if (len == 2)
 	{
 		if (!(ft_strcmp(input[1], "--")))
 		{
-			ft_chdir("", 0);
+			ft_chdir("", 0, env);
 			return (1);
 		}
 		else if (!(ft_strcmp(input[1], "-")))
 		{
-			ft_chdir("", -1);
+			ft_chdir("", -1, env);
 			return (1);
 		}
 		else
-			ft_chdir(input[1], 1);
+			ft_chdir(input[1], 1, env);
 		return (1);
 	}
 	else

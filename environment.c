@@ -1,36 +1,49 @@
 
 # include "minishell.h"
 
-void    get_m_env(char **env)
+t_env         *create_maillon(void)
 {
-    int i;
+    t_env *l;
 
-    i =0;
-    m_env = (char **)malloc(sizeof(char *) * (dp_len(env) + 1));
-    while (env[i])
-    {
-        m_env[i] = ft_strdup(env[i]);
-        i++;
-    }
-   m_env[i] = NULL;
+     l = (t_env *)malloc(sizeof(t_env));
+     l->next = NULL;
+    return (l);
 }
 
-static char		**realloc_env(int new_size)
+void            ft_alloc(t_env **param, t_env **curr, t_env **tt)
 {
-	char	**new;
-	int		i;
+        if ((*param) == NULL)
+        {
+                (*param) = create_maillon();
+                (*tt) = (*param);
+                (*param)->var = (*curr)->var;
+        }
+        else
+        {
+                (*param)->next = create_maillon();
+                (*param)->next->var = (*curr)->var;
+                (*param) = (*param)->next;
+        }
+}
 
-	new = (char **)ft_memalloc(sizeof(char *) * (new_size + 1));
-	i = 0;
-	while (m_env[i])
-	{
-		new[i] = ft_strdup(m_env[i]);
-		free(m_env[i]);
-		i++;
-	}
-	new[i + 1] = NULL;
-	free(m_env);
-	return (new);
+t_env			*get_m_env(char **env)
+{
+    int		i;
+	t_env	*curr;
+	t_env	*tt;
+	t_env	*m_env;
+
+    i =0;
+    curr = create_maillon();
+	while (env[i])
+    {
+        curr->var = ft_strdup(env[i]);
+		ft_alloc(&m_env, &curr, &tt);
+        i++;
+    }
+	free(curr);
+	m_env = tt;
+	return (m_env);
 }
 
 static int		is_first_word(char *s1, char *s2)
@@ -44,70 +57,83 @@ static int		is_first_word(char *s1, char *s2)
 	return (1);
 }
 
-int		find_var_pos(char *var)
+t_env		*find_var_pos(char *var, t_env *m_env)
 {
-	int		i;
-	char	*tmp;
+	char	*t;
+	t_env	*tmp;
 
-	i = 0;
-	while (m_env[i])
+	tmp = m_env;
+	while (tmp)
 	{
-		tmp = ft_strjoin(var, "=");
-		if (is_first_word(m_env[i], tmp))
+		printf("LOLO\n");
+		t = ft_strjoin(var, "=");
+		if (is_first_word(tmp->var, t))
 		{
-			free(tmp);
-			return (i);
+			free(t);
+			return (tmp);
 		}
-		i++;
-		free(tmp);
+		tmp = tmp->next;
+		free(t);
 	}
-	return (i);
+	return (NULL);
 }
 
-char            *get_var(char *name)
+char            *get_var(char *name, t_env *m_env)
 {
    	int		i;
 	char	*tmp;
+	t_env	*env;
 
+	env = m_env;
 	i = -1;
-	while (m_env[++i])
+	while (env)
 	{
 		tmp = ft_strjoin(name, "=");
-		if (is_first_word(m_env[i], tmp))
+		if (is_first_word(env->var, tmp))
 		{
 			free(tmp);
-			return (ft_strchr(m_env[i], '=') + 1);
+			return (ft_strchr(env->var, '=') + 1);
 		}
+		env = env->next;
 		free(tmp);
 	}
 	return (NULL);
 }
 
-void	set_var(char *name, char *value)
+void	set_var(char *name, char *value, t_env **m_env)
 {
-	int		pos;
-	char	*tmp;
+	t_env		*pos;
+	t_env		*env;
+	char		*tmp;
 
-	pos = find_var_pos(name);
+	env = *m_env;
+	
+	pos = find_var_pos(name, env);
+	//printf("LOLO%s; \n",pos->var);
+	//env = *m_env;
 	if (value)
      	tmp = ft_strjoin("=", value);
-	if (m_env[pos])
+	if (pos)
 	{
-		free(m_env[pos]);
+		free(pos);
 		if (value)
-			m_env[pos] = ft_strjoin(name, tmp);
+			pos->var = ft_strjoin(name, tmp);
 		else
-			m_env[pos] = ft_strjoin(name, "=");
+			pos->var = ft_strjoin(name, "=");
 	}
 	else
 	{
-		m_env = realloc_env(pos + 1);
+		pos = create_maillon();
 		if (value)
-			m_env[pos] = ft_strjoin(name, tmp);
+			pos->var = ft_strjoin(name, tmp);
 		else
-			m_env[pos] = ft_strjoin(name, "=");
+			pos->var = ft_strjoin(name, "=");
+		while (*m_env)
+			(*m_env) = (*m_env)->next;
+		(*m_env) = pos;
 	}
-//	printf("//m_env(pos)%d: %s\n", pos,  m_env[pos]);
+	printf("//m_env(pos): %s\n",  pos->var);
 	if (value)
      	free(tmp);
+	//*m_env = env;
 }

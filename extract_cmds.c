@@ -27,32 +27,8 @@ int     lstlen(t_input *l)
 	return (size);
 }
 
-char    **ft_lsttoarr(t_input *input)
-{
-	t_input *tt;
-	char    *str;
-	char    **cmds;
-	int     i;
 
-	i = 0;
-	tt = input;
-	if (!input)
-		return (NULL);
-	if (!(str = (char *)malloc(lstlen(input) + 1)))
-		return (NULL);
-	while (input)
-	{
-		str[i] = input->c;
-		i++;
-		input = input->next;
-	}
-	str[i] = '\0';
-	cmds = ft_strsplit(str, ';');
-	return (cmds);
-}
-
-
-int		is_builtin(char **input)
+int		is_builtin(char **input, t_env **m_env)
 {
 	if (ft_strequ(input[0], "exit"))
 	{
@@ -63,15 +39,15 @@ int		is_builtin(char **input)
 		return (1);
 	}
 	if (ft_strequ(input[0], "env"))
-		return (run_env(input));
+		return (run_env(input, *m_env));
 	if (ft_strequ(input[0], "setenv"))
-		return (run_setenv(input));
+		return (run_setenv(input, m_env));
 	if (ft_strequ(input[0], "cd"))
-		return (run_cd(input));
+		return (run_cd(input, m_env));
 	return (0);
 }
 
-int     ft_check_cmds(char **cmds)
+int     ft_check_cmds(char **cmds, t_env **m_env)
 {
 	char    **input;
 	int		x;
@@ -83,7 +59,7 @@ int     ft_check_cmds(char **cmds)
 	{
 		input = ft_strsplits(cmds[i]);
 		j = 0;
-		if ((x = is_builtin(input)) == -1)
+		if ((x = is_builtin(input, m_env)) == -1)
 		{
 			free_tab(&input);
 			return (-1);
@@ -92,7 +68,6 @@ int     ft_check_cmds(char **cmds)
 		i++;
 	}
 	i = 0;
-
 	return (1);
 }
 

@@ -58,90 +58,55 @@ void    display_prompt(void)
     ft_putstr("my-sh>>$ ");
 }
 
-t_input         *create_maillon(void)
+
+/*char       *get_input(void)
 {
-    t_input *l;
+//    char        buff;
+ //   int         nb_oct;
+    char        *input;
 
-     l = (t_input *)malloc(sizeof(t_input));
-     l->next = NULL;
-    return (l);
-}
-
-void            ft_alloc(t_input **param, t_input **curr, t_input **tt)
-{
-        if ((*param) == NULL)
-        {
-                (*param) = create_maillon();
-                (*tt) = (*param);
-                (*param)->c = (*curr)->c;
-        }
-        else
-        {
-                (*param)->next = create_maillon();
-                (*param)->next->c = (*curr)->c;
-                (*param) = (*param)->next;
-        }
-}
-
-t_input    *get_input(void)
-{
-    char        buff;
-    int         nb_oct;
-    t_input     *input;
-    t_input     *tt;
-    t_input     *curr;
-
-    tt = NULL;
-    input = NULL;
-    curr = create_maillon();
-    while ((nb_oct = read(0, &buff, 1)) && buff != '\n')
-    {
-        printf("%c\t", buff);
-        curr->c = buff;
-        ft_alloc(&input, &curr, &tt);
-    }
-    free(curr);
-    input = tt;
+    if(!get_next_line(0, &input))
+        return (NULL);
     return (input);
-}
+}*/
 
 int     main(int ac, char **av, char **env)
 {
     int         i;
-    t_input     *input;
+    char         *input;
     char        **cmds;
-
+    t_env       *m_env;
     char    *pwd;
 	char	buff[4097];
 
-    i = 0;
-
     cmds = NULL;
     input = NULL;
-    get_m_env(env);
+    m_env = get_m_env(env);
     while (1)
     {   
       	pwd = getcwd(buff, 4096);
         printf("\n\t--PWD$ %s\n", pwd);
         display_prompt();
-        if (!(input = get_input()))
+        if (!get_next_line(0, &input))
         {
             free (input);
             continue;
         }
-        cmds = ft_lsttoarr(input);
+
+        cmds = ft_strsplit(input, ';');;
+        /*i = 0;
         while (cmds[i])
         {
-            printf("|%s|\n", cmds[i]);
+            printf("HERE|%s|\n", cmds[i]);
             i++;
-        }
-        if (ft_check_cmds(cmds) == -1)
+        }*/
+        if (ft_check_cmds(cmds, &m_env) == -1)
         {
             free_tab(&cmds);
-            ft_clean_lst(&input);
+            ft_strdel(&input);
             break;
         }
-        ft_clean_lst(&input);
+        ft_strdel(&input);
         free_tab(&cmds);
     }
     return (0);
