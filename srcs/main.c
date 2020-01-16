@@ -12,51 +12,9 @@
 
 # include "minishell.h"
 
-int     dp_len(char **env)
-{
-    int i;
-
-    i = 0;
-    while (env[i])
-        i++;
-    return (i);
-}
-
-void	free_tab(char ***tab)
-{
-	int		i;
-	char	**tmp;
-
-	tmp = *tab;
-	i = 0;
-	while (tmp[i])
-	{
-		ft_strdel(&tmp[i]);
-		i++;
-	}
-	free(tmp);
-	tmp = NULL;
-}
-
-void	ft_clean_lst(t_env **args)
-{
-	t_env	*h;
-	t_env	*n;
-
-	h = *args;
-	while (h)
-	{
-		n = h->next;
-        ft_strdel(&h->var);
-		free(h);
-		h = n;
-	}
-	free(h);
-}
-
 void    display_prompt(void)
 {
-    ft_putstr("my-sh>>$ ");
+    ft_putstr("my.sh>>$ ");
 }
 
 int     main(int ac, char **av, char **env)
@@ -70,13 +28,12 @@ int     main(int ac, char **av, char **env)
 
     cmds = NULL;
     input = NULL;
-    get_m_env(env, &m_env);
+    m_env = get_m_env(env);
     //m_env = NULL;
     while (1)
     {   
       	pwd = getcwd(buff, 4096);
         printf("\n\t--PWD$ %s\n", pwd);
-   		//(m_env) ? printf("|%s|\n",m_env->var) : printf("No env!\n");
         display_prompt();
         if (!get_next_line(0, &input))
         {
@@ -84,7 +41,7 @@ int     main(int ac, char **av, char **env)
             continue;
         }
         cmds = ft_strsplit(input, ';');;
-        if (ft_check_cmds(cmds, m_env) == -1)
+        if (ft_check_cmds(cmds, &m_env) == -1)
         {
             free_tab(&cmds);
             ft_strdel(&input);

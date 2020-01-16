@@ -12,23 +12,7 @@
 
 # include "minishell.h"
 
-int     lstlen(t_input *l)
-{
-	int     size;
-	t_input *tt;
-
-	size = 0;
-	tt = l;
-	while(tt)
-	{
-		size++;
-		tt = tt->next;
-	}
-	return (size);
-}
-
-
-int		is_builtin(char **input, t_env *m_env)
+int		is_builtin(char **input, t_env **m_env)
 {
 	if (ft_strequ(input[0], "exit"))
 	{
@@ -39,7 +23,7 @@ int		is_builtin(char **input, t_env *m_env)
 		return (1);
 	}
 	if (ft_strequ(input[0], "env"))
-		return (run_env(input, m_env));
+		return (run_env(input, *m_env));
 	if (ft_strequ(input[0], "setenv"))
 		return (run_setenv(input, m_env));
 //	if (ft_strequ(input[0], "cd"))
@@ -47,27 +31,73 @@ int		is_builtin(char **input, t_env *m_env)
 	return (0);
 }
 
-int     ft_check_cmds(char **cmds, t_env *m_env)
+int		run_cmd(char *cmd, char **input)
 {
-	char    **input;
-	int		x;
-	int     i;
-	int		j;
+
+}
+
+int		is_bin(char **input, t_env *m_env)
+{
+	struct stat st;
+	char		**path;
+	char		*exc;
+	int			i;
+
+	i = 0;
+	path = ft_strsplit(get_var("PATH", m_env), ':');
+	while (path && path[i])
+	{
+		if (is_first_word(path[i], input[0]))
+			exc = ft_strdup(input[0]);
+		else
+			exc = do_path(path[i], input[0]);
+		if (lstat(exc, &st) == -1)
+			free(exc);
+		else if (run_cmd(exc, input))
+		{
+			ft_strdel(&exc);
+			free_tab(&path);
+			return (1);
+		}
+		else
+			free(exc);
+		i++;
+	}
+	free_tab(&path);
+	return (0);
+}
+
+int     ft_check_cmds(char **cmds, t_env **m_env)
+{
+	char		**input;
+	struct stat	st;
+	int			x;
+	int			i;
 
 	i = 0;
 	while (cmds[i])
 	{
 		input = ft_strsplits(cmds[i]);
-		j = 0;
-		if ((x = is_builtin(input, m_env)) == -1)
+		x = is_builtin(input, m_env);
+		if (x == -1)
 		{
 			free_tab(&input);
 			return (-1);
 		}
+		if (x == 1 || is_bin(input, m_env))
+		{
+
+		}
+		else if (lstat(input[0], &st) != -1)
+		{
+			if (st.st_mode & S_IXUSR)
+				run_cmd (input[0], input);
+		}
+		else
+			ft_put2str("minishell: command not found: ", input[0], 0);
 		free_tab(&input);
 		i++;
 	}
-	i = 0;
 	return (1);
 }
 
