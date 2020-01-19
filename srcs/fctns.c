@@ -130,3 +130,24 @@ void    ft_put3str (char *s1, char *s2, char *s3)
     ft_putstr(s2);
     ft_putstr(s3);
 }
+
+char    **ft_lsttoarr(t_env *env)
+{
+        char    *str;
+        char    **m_env;
+        int     i;
+
+        i = 0;
+        if (!env)
+            return (NULL);
+        if (!(str = (char *)malloc(lstlen(env) + 1)))
+                return (NULL);
+        while (env)
+        {
+                str[i] = env->var;
+                i++;
+                env = env->next;
+        }
+        str[i] = '\0';
+        return (m_env);
+}

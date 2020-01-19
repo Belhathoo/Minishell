@@ -17,6 +17,8 @@
 
 # include <unistd.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
+# include <signal.h>
 # include "../libft/libft.h"
 
 
@@ -45,7 +47,7 @@ void    set_var(char *name, char *value, t_env **m_env);
 
 
 char	**ft_lstsplit(t_input **s, char c);
-char    **ft_lsttoarr(t_input *input);
+char    **ft_lsttoarr(t_env *env);
 
 
 

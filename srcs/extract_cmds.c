@@ -31,14 +31,31 @@ int		is_builtin(char **input, t_env **m_env)
 	return (0);
 }
 
-int		run_cmd(char *cmd, char **input)
-{
 
+int		run_cmd(char *cmd, char **input, t_env *env)
+{
+	pid_t	pid;
+	char	**m_env;
+
+	m_env = ft_lsttoarr(env);
+	pid = fork();
+	if (pid == 0)
+		execve(cmd, input, m_env);
+	else if (pid < 0)
+	{
+		free(cmd);
+		ft_putendl("Fork failed to create a new process.");
+		return (-1);
+	}
+	wait(&pid);
+	if (cmd)
+		free(cmd);
+	return (0);
 }
 
 int		is_bin(char **input, t_env *m_env)
 {
-	struct stat st;
+	struct stat *st;
 	char		**path;
 	char		*exc;
 	int			i;
@@ -51,9 +68,9 @@ int		is_bin(char **input, t_env *m_env)
 			exc = ft_strdup(input[0]);
 		else
 			exc = do_path(path[i], input[0]);
-		if (lstat(exc, &st) == -1)
+		if (lstat(exc, st) == -1)
 			free(exc);
-		else if (run_cmd(exc, input))
+		else if (run_cmd(exc, input, m_env))
 		{
 			ft_strdel(&exc);
 			free_tab(&path);
