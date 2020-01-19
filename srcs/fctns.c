@@ -12,10 +12,10 @@
 
 # include "minishell.h"
 
-/*int     lstlen(t_input *l)
+int     lstlen(t_env *l)
 {
 	int     size;
-	t_input *tt;
+	t_env *tt;
 
 	size = 0;
 	tt = l;
@@ -25,7 +25,7 @@
 		tt = tt->next;
 	}
 	return (size);
-}*/
+}
 
 
 char	*do_path(char *name, char *d_name)
@@ -58,14 +58,12 @@ void            ft_alloc(t_env **param, t_env **curr, t_env **tt)
 {
         if ((*param) == NULL)
         {
-    			printf("1st\n");
 	            (*param) = create_maillon();
                 (*tt) = (*param);
                 (*param)->var = ft_strdup((*curr)->var);
         }
         else
         {
-				printf("2nd\n");
                 (*param)->next = create_maillon();
                 (*param)->next->var = ft_strdup((*curr)->var);
                 (*param) = (*param)->next;
@@ -133,14 +131,13 @@ void    ft_put3str (char *s1, char *s2, char *s3)
 
 char    **ft_lsttoarr(t_env *env)
 {
-        char    *str;
-        char    **m_env;
+        char    **str;
         int     i;
 
         i = 0;
         if (!env)
             return (NULL);
-        if (!(str = (char *)malloc(lstlen(env) + 1)))
+        if (!(str = (char **)malloc(lstlen(env) + 1)))
                 return (NULL);
         while (env)
         {
@@ -148,6 +145,6 @@ char    **ft_lsttoarr(t_env *env)
                 i++;
                 env = env->next;
         }
-        str[i] = '\0';
-        return (m_env);
+        str[i] = NULL;
+        return (str);
 }

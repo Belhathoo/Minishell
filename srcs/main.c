@@ -14,7 +14,7 @@
 
 void    display_prompt(void)
 {
-    ft_putstr("my.sh>>$ ");
+    ft_putstr("\nmy.sh>>$ ");
 }
 
 int     main(int ac, char **av, char **env)
@@ -32,8 +32,8 @@ int     main(int ac, char **av, char **env)
     //m_env = NULL;
     while (1)
     {   
-      	pwd = getcwd(buff, 4096);
-        printf("\n\t--PWD$ %s\n", pwd);
+      	//pwd = getcwd(buff, 4096);
+        //printf("\n\t--PWD$ %s\n", pwd);
         display_prompt();
         if (!get_next_line(0, &input))
         {

@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-SRC = main.c extract_cmds.c ft_lstsplit.c
+SRC = main.c extract_cmds.c ft_lstsplit.c fctns.c
 SRC += environment.c run_env.c run_cd.c run_setenv.c
 
 SRCS = $(SRC:%=srcs/%)

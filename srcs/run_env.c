@@ -30,11 +30,8 @@ void	display_m_env(t_env *env)
 int     run_env(char **input, t_env *m_env)
 {
 	if (dp_len(input) == 1)
-	{
 		display_m_env(m_env);
-		return (1);
-	}
 	else
 		ft_putstr("env: Too many arguments.\n");
-    return (0);
+    return (1);
 }

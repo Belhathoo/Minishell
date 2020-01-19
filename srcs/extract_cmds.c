@@ -28,34 +28,57 @@ int		is_builtin(char **input, t_env **m_env)
 		return (run_setenv(input, m_env));
 //	if (ft_strequ(input[0], "cd"))
 //		return (run_cd(input, m_env));
+//	if (ft_strequ(input[0], "echo"))
+//		return (run_echo(input, m_env));
+//	printf("No Builtins!\n");
 	return (0);
 }
 
 
-int		run_cmd(char *cmd, char **input, t_env *env)
+int		run_cmd(char *cmd, char **input, char **m_env)
 {
 	pid_t	pid;
+
+	printf("OPLAA!!");
+	pid = fork();
+	if (pid == 0)
+	{
+		if (execve(cmd, input, m_env) == -1)
+			printf("ERR");
+	}
+	else if (pid < 0)
+	{
+		ft_putendl("Fork failed to create a new process.");
+		return (0);
+	}
+	else
+		wait(&pid);
+//	perror("!! ");
+	return (1);
+}
+
+int		check_exec(char *path, struct stat st, char **input, t_env *env)
+{
 	char	**m_env;
 
 	m_env = ft_lsttoarr(env);
-	pid = fork();
-	if (pid == 0)
-		execve(cmd, input, m_env);
-	else if (pid < 0)
+	if (st.st_mode & S_IFREG)
 	{
-		free(cmd);
-		ft_putendl("Fork failed to create a new process.");
-		return (-1);
+		if (st.st_mode & S_IXUSR)
+			return (run_cmd(path, input, m_env));
+		else
+		{
+			ft_put3str("minishell: permision denied: ", input[0], 0);	
+			return (0);
+		}
 	}
-	wait(&pid);
-	if (cmd)
-		free(cmd);
+
 	return (0);
 }
 
 int		is_bin(char **input, t_env *m_env)
 {
-	struct stat *st;
+	struct stat st;
 	char		**path;
 	char		*exc;
 	int			i;
@@ -68,20 +91,43 @@ int		is_bin(char **input, t_env *m_env)
 			exc = ft_strdup(input[0]);
 		else
 			exc = do_path(path[i], input[0]);
-		if (lstat(exc, st) == -1)
-			free(exc);
-		else if (run_cmd(exc, input, m_env))
+		if (lstat(exc, &st) != -1)
 		{
-			ft_strdel(&exc);
-			free_tab(&path);
-			return (1);
+			if (check_exec(exc, st, input, m_env))
+			{
+				free(exc);
+				free_tab(&path);
+				return (1);
+			}
 		}
-		else
-			free(exc);
+		free(exc);
 		i++;
 	}
 	free_tab(&path);
 	return (0);
+}
+
+int		ft_check_one_cmd(char **input, t_env **m_env)
+{
+	//	char			**input;
+		int				x;
+		struct stat		st;
+
+	//	input = ft_strsplits(cmd);
+		x = is_builtin(input, m_env);
+		if (x == -1)
+		{
+			free_tab(&input);
+			return (-1);
+		}
+		if (x == 1 || is_bin(input, *m_env))
+			return (1);
+		else if (lstat(input[0], &st) != -1)
+			return(check_exec(input[0], st, input, *m_env));
+		else
+			ft_put3str("00minishell: command not found: ", input[0], 0);
+		free_tab(&input);
+		return (0);
 }
 
 int     ft_check_cmds(char **cmds, t_env **m_env)
@@ -95,24 +141,8 @@ int     ft_check_cmds(char **cmds, t_env **m_env)
 	while (cmds[i])
 	{
 		input = ft_strsplits(cmds[i]);
-		x = is_builtin(input, m_env);
-		if (x == -1)
-		{
-			free_tab(&input);
+		if (ft_check_one_cmd(input, m_env) == -1)
 			return (-1);
-		}
-		if (x == 1 || is_bin(input, m_env))
-		{
-
-		}
-		else if (lstat(input[0], &st) != -1)
-		{
-			if (st.st_mode & S_IXUSR)
-				run_cmd (input[0], input);
-		}
-		else
-			ft_put2str("minishell: command not found: ", input[0], 0);
-		free_tab(&input);
 		i++;
 	}
 	return (1);

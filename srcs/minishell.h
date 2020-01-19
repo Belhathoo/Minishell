@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-# include <signal.h>
+//# include <signal.h>
 # include "../libft/libft.h"
 
 
@@ -62,6 +62,6 @@ int		is_first_word(char *s1, char *s2);
 int     dp_len(char **env);
 void	free_tab(char ***tab);
 void	ft_clean_lst(t_env **args);
-int     lstlen(t_input *l);
+int     lstlen(t_env *l);
 void    ft_put3str(char *s1, char *s2, char *s3);
 #endif
