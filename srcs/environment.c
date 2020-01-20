@@ -109,5 +109,13 @@ void		set_var(char *name, char *value, t_env **env)
 	}
 	if (value)
      	free(tmp);
-//	printf("//m_env(pos): ** %s\n", (pos)->var);
 }
+
+
+
+
+
+
+
+
+

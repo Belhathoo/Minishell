@@ -26,11 +26,13 @@ int		is_builtin(char **input, t_env **m_env)
 		return (run_env(input, *m_env));
 	if (ft_strequ(input[0], "setenv"))
 		return (run_setenv(input, m_env));
+	if (ft_strequ(input[0], "unsetenv"))
+		return (run_unsetenv(input, m_env));
 //	if (ft_strequ(input[0], "cd"))
 //		return (run_cd(input, m_env));
 //	if (ft_strequ(input[0], "echo"))
 //		return (run_echo(input, m_env));
-//	printf("No Builtins!\n");
+	printf("No Builtins!\n");
 	return (0);
 }
 
@@ -41,19 +43,18 @@ int		run_cmd(char *cmd, char **input, char **m_env)
 
 	printf("OPLAA!!");
 	pid = fork();
-	if (pid == 0)
-	{
-		if (execve(cmd, input, m_env) == -1)
-			printf("ERR");
-	}
-	else if (pid < 0)
+	if (pid < 0)
 	{
 		ft_putendl("Fork failed to create a new process.");
 		return (0);
 	}
-	else
+	if (pid == 0)
+	{
+		execve(cmd, input, m_env);
+		ft_putendl("error!");
+	}
+	if (pid > 0)
 		wait(&pid);
-//	perror("!! ");
 	return (1);
 }
 
@@ -64,15 +65,12 @@ int		check_exec(char *path, struct stat st, char **input, t_env *env)
 	m_env = ft_lsttoarr(env);
 	if (st.st_mode & S_IFREG)
 	{
-		if (st.st_mode & S_IXUSR)
+		if (st.st_mode & S_IEXEC)
 			return (run_cmd(path, input, m_env));
 		else
-		{
-			ft_put3str("minishell: permision denied: ", input[0], 0);	
-			return (0);
-		}
+			ft_put3str("minishell: permision denied: ", input[0], "\n");	
+		return (1);
 	}
-
 	return (0);
 }
 
@@ -109,31 +107,23 @@ int		is_bin(char **input, t_env *m_env)
 
 int		ft_check_one_cmd(char **input, t_env **m_env)
 {
-	//	char			**input;
 		int				x;
 		struct stat		st;
 
-	//	input = ft_strsplits(cmd);
 		x = is_builtin(input, m_env);
 		if (x == -1)
-		{
-			free_tab(&input);
 			return (-1);
-		}
 		if (x == 1 || is_bin(input, *m_env))
 			return (1);
-		else if (lstat(input[0], &st) != -1)
+		printf("**NO BINS**\n");
+		if (lstat(input[0], &st) != -1)
 			return(check_exec(input[0], st, input, *m_env));
-		else
-			ft_put3str("00minishell: command not found: ", input[0], 0);
-		free_tab(&input);
 		return (0);
 }
 
 int     ft_check_cmds(char **cmds, t_env **m_env)
 {
 	char		**input;
-	struct stat	st;
 	int			x;
 	int			i;
 
@@ -141,8 +131,11 @@ int     ft_check_cmds(char **cmds, t_env **m_env)
 	while (cmds[i])
 	{
 		input = ft_strsplits(cmds[i]);
-		if (ft_check_one_cmd(input, m_env) == -1)
+		x = ft_check_one_cmd(input, m_env);
+		if (x == -1)
 			return (-1);
+		if (x == 0)
+			ft_put3str("00minishell: command not found: ", input[0], "\n");
 		i++;
 	}
 	return (1);

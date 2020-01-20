@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-//# include <signal.h>
+# include <signal.h>
 # include "../libft/libft.h"
 
 
@@ -37,13 +37,15 @@ typedef struct          s_env
 
 
 
-t_env         *create_maillon(void);
-void            ft_alloc(t_env **param, t_env **curr, t_env **tt);
+t_env       *create_maillon(void);
+void        ft_alloc(t_env **param, t_env **curr, t_env **tt);
+
 t_env       *get_m_env(char **env);
-void	display_m_env(t_env *m_env);
+void        display_m_env(t_env *m_env);
 
 char    *get_var(char *name, t_env *m_env);
 void    set_var(char *name, char *value, t_env **m_env);
+void    unset_var(char *name, t_env **m_env);
 
 
 char	**ft_lstsplit(t_input **s, char c);
@@ -54,6 +56,7 @@ char    **ft_lsttoarr(t_env *env);
 int     ft_check_cmds(char **cmds, t_env **m_env);
 
 int     run_setenv(char **input, t_env **m_env);
+int     run_unsetenv(char **input, t_env **m_env);
 int     run_env(char **input, t_env *m_env);
 int		run_cd(char	**input, t_env *m_env);
 

@@ -19,7 +19,6 @@ int     run_setenv(char **input, t_env **m_env)
 
     env = *m_env;
     len = dp_len(input);
-    //printf("Len: %d, %s ||\n", len, input[len - 1]);
     if (len == 1)
         display_m_env(*m_env);
     else if (len == 2)
@@ -30,7 +29,5 @@ int     run_setenv(char **input, t_env **m_env)
         ft_putstr("setenv: Too many arguments.\n");
     if (env)
         (*m_env) = env;
-//    if (m_env)
-  //      printf("00//%s ..\n", (*m_env)->var);
     return (1);
 }

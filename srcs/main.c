@@ -14,7 +14,7 @@
 
 void    display_prompt(void)
 {
-    ft_putstr("\nmy.sh>>$ ");
+    ft_putstr("my.sh>>$ ");
 }
 
 int     main(int ac, char **av, char **env)
@@ -44,10 +44,10 @@ int     main(int ac, char **av, char **env)
         if (ft_check_cmds(cmds, &m_env) == -1)
         {
             free_tab(&cmds);
-            ft_strdel(&input);
+            //free(input);
             break;
         }
-        ft_strdel(&input);
+        //free(input);
         free_tab(&cmds);
     }
     ft_clean_lst(&m_env);

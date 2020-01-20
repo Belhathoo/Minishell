@@ -98,13 +98,16 @@ void	free_tab(char ***tab)
 
 	tmp = *tab;
 	i = 0;
-	while (tmp[i])
+	if (tmp)
 	{
-		ft_strdel(&tmp[i]);
-		i++;
+		while (tmp[i])
+		{
+			ft_strdel(&tmp[i]);
+			i++;
+		}	
+		free(tmp);
+		tmp = NULL;
 	}
-	free(tmp);
-	tmp = NULL;
 }
 
 void	ft_clean_lst(t_env **args)
@@ -113,14 +116,17 @@ void	ft_clean_lst(t_env **args)
 	t_env	*n;
 
 	h = *args;
-	while (h)
+	if (h)
 	{
-		n = h->next;
-        ft_strdel(&h->var);
+		while (h)
+		{
+			n = h->next;
+   			ft_strdel(&h->var);
+			free(h);
+			h = n;
+		}
 		free(h);
-		h = n;
 	}
-	free(h);
 }
 void    ft_put3str (char *s1, char *s2, char *s3)
 {

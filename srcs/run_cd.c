@@ -93,6 +93,6 @@ int		run_cd(char	**input, t_env *env)
 	}
 	else
 		ft_putstr("cd: Too many arguments.\n");
-	return (0);
+	return (1);
 }
 */
