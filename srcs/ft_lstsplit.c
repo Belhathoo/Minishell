@@ -1,7 +1,7 @@
 
 # include "minishell.h"
 
-int	ft_lstword_size(t_input *str, char c)
+/*int	ft_lstword_size(t_input *str, char c)
 {
 	int		word_size;
 
@@ -80,4 +80,4 @@ char	**ft_lstsplit(t_input **lst, char c)
   //  free(s);
 	new_s[i[0]] = 0;
 	return (new_s);
-}
+}*/

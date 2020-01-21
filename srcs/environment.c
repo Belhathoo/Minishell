@@ -21,6 +21,8 @@ t_env			*get_m_env(char **env)
 	t_env	*m_env;
 
     i =0;
+	tt = NULL;
+	m_env = NULL;
     curr = create_maillon();
 	while (env[i])
     {
@@ -29,6 +31,7 @@ t_env			*get_m_env(char **env)
         i++;
     }
 	free(curr);
+	curr = NULL;
 	m_env = tt;
 	return (m_env);
 }
@@ -44,11 +47,11 @@ t_env		*find_var_pos(char *var, t_env *m_env)
 		t = ft_strjoin(var, "=");
 		if (is_first_word(tmp->var, t))
 		{
-			free(t);
+			ft_strdel(&t);
 			return (tmp);
 		}
 		tmp = tmp->next;
-		free(t);
+		ft_strdel(&t);
 	}
 	return (NULL);
 }
@@ -66,11 +69,11 @@ char            *get_var(char *name, t_env *m_env)
 		tmp = ft_strjoin(name, "=");
 		if (is_first_word(env->var, tmp))
 		{
-			free(tmp);
+			ft_strdel(&tmp);
 			return (ft_strchr(env->var, '=') + 1);
 		}
 		env = env->next;
-		free(tmp);
+		ft_strdel(&tmp);
 	}
 	return (NULL);
 }
@@ -87,7 +90,7 @@ void		set_var(char *name, char *value, t_env **env)
      	tmp = ft_strjoin("=", value);
 	if (pos)
 	{
-		free(pos->var);
+		ft_strdel(&pos->var);
 		if (value)
 			pos->var = ft_strjoin(name, tmp);
 		else
@@ -106,9 +109,10 @@ void		set_var(char *name, char *value, t_env **env)
 		ft_alloc(env, &pos, &tt);
 		*env = tt;
 		free (pos);
+		pos = NULL;
 	}
 	if (value)
-     	free(tmp);
+     	ft_strdel(&tmp);
 }
 
 

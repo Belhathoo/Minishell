@@ -1,6 +1,6 @@
 
 #include "libft.h"
-//#include "../minishell.h"
+
 int		ft_countwordsall(char *str)
 {
 	int count;
@@ -42,14 +42,16 @@ char			**ft_strsplits(char *s)
 	int		i;
 	int		j;
 	int		k;
+	int		words;
 	char	**str2;
 
+	words = ft_countwordsall(s);
 	if (!s || !(str2 = (char **)malloc(sizeof(*str2) *
-		(ft_countwordsall(s) + 1))))
+		(words + 1))))
 		return (NULL);
 	i = -1;
 	j = 0;
-	while (++i < ft_countwordsall(s))
+	while (++i < words)
 	{
 		k = 0;
 		if (!(str2[i] = ft_strnew(get_word_len(&s[j]) + 1)))

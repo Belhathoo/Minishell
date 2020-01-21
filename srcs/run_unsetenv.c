@@ -26,7 +26,7 @@ void		unset_var(char *var, t_env **m_env)
     if (is_first_word(previous->var, name))
 	{
 		(*m_env) = previous->next;
-		free(previous->var);
+		ft_strdel(&previous->var);
 		free(previous);
         previous = NULL;
 		return ;
@@ -37,13 +37,14 @@ void		unset_var(char *var, t_env **m_env)
 		if (is_first_word(tmp->var, name))
 		{
             previous->next = tmp->next;
-			free(tmp->var);
-			free(tmp);
+			ft_strdel(&tmp->var);
+			free(&tmp);
 			return ;
 		}
 		previous = tmp;
 		tmp = tmp->next;
 	}
+    ft_strdel(&name);
 }
 
 int     run_unsetenv(char **input, t_env **m_env)
@@ -69,34 +70,3 @@ int     run_unsetenv(char **input, t_env **m_env)
         (*m_env) = env;
     return (1);
 }
-
-
-/*
-element* supprimerElement(element* list, int valeur)
-{
-element  *tmp;
-element  *previous;
- 
-if (list == NULL) // si la liste est NULL on s'arrete tout de suite
-  return (list);
-previous = list;
-if (previous->data == valeur) // Verifie la tete de liste, cas particulier
-{
-  liste = previous->next;
-  free(previous);
-  return (list);
-}
-tmp = previous->next; // le cas n est gere on se place donc sur le cas n+1
-while(tmp != NULL) // On Mouline est on supprime si on trouve l'element
-{
-  if (tmp->data == valeur)
-  {
-    previous->next = tmp->next;
-    free(tmp);
-    return (liste);
-  }
-  previous = tmp; // pour ce souvenir dans la prochaine iteration du precedent
-  tmp = tmp->next;
-}
-return liste;
-}*/

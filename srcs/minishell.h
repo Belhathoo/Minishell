@@ -22,13 +22,6 @@
 # include "../libft/libft.h"
 
 
-
-typedef struct          s_input
-{
-    char                c;
-    struct s_input      *next;
-}                       t_input;
-
 typedef struct          s_env
 {
     char                *var;
@@ -48,12 +41,16 @@ void    set_var(char *name, char *value, t_env **m_env);
 void    unset_var(char *name, t_env **m_env);
 
 
-char	**ft_lstsplit(t_input **s, char c);
+//char	**ft_lstsplit(t_input **s, char c);
 char    **ft_lsttoarr(t_env *env);
 
 
 
 int     ft_check_cmds(char **cmds, t_env **m_env);
+int		is_builtin(char **input, t_env **m_env);
+int		is_bin(char **input, t_env *m_env);
+int		check_exec(char *path, struct stat st, char **input, t_env *env);
+
 
 int     run_setenv(char **input, t_env **m_env);
 int     run_unsetenv(char **input, t_env **m_env);

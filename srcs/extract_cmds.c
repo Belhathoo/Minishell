@@ -12,36 +12,11 @@
 
 # include "minishell.h"
 
-int		is_builtin(char **input, t_env **m_env)
-{
-	if (ft_strequ(input[0], "exit"))
-	{
-		if (dp_len(input) == 1)
-			return (-1);
-		else
-			ft_putstr("exit : Exxpression Syntax.");
-		return (1);
-	}
-	if (ft_strequ(input[0], "env"))
-		return (run_env(input, *m_env));
-	if (ft_strequ(input[0], "setenv"))
-		return (run_setenv(input, m_env));
-	if (ft_strequ(input[0], "unsetenv"))
-		return (run_unsetenv(input, m_env));
-//	if (ft_strequ(input[0], "cd"))
-//		return (run_cd(input, m_env));
-//	if (ft_strequ(input[0], "echo"))
-//		return (run_echo(input, m_env));
-	printf("No Builtins!\n");
-	return (0);
-}
-
-
 int		run_cmd(char *cmd, char **input, char **m_env)
 {
 	pid_t	pid;
 
-	printf("OPLAA!!");
+	//printf("OPLAA!!");
 	pid = fork();
 	if (pid < 0)
 	{
@@ -50,8 +25,11 @@ int		run_cmd(char *cmd, char **input, char **m_env)
 	}
 	if (pid == 0)
 	{
-		execve(cmd, input, m_env);
-		ft_putendl("error!");
+		if (execve(cmd, input, m_env) == -1)
+		{
+			ft_put3str("minishell: command not found: ", input[0], "\n");
+			exit(-1);
+		}
 	}
 	if (pid > 0)
 		wait(&pid);
@@ -74,6 +52,29 @@ int		check_exec(char *path, struct stat st, char **input, t_env *env)
 	return (0);
 }
 
+int		is_builtin(char **input, t_env **m_env)
+{
+	if (ft_strequ(input[0], "exit"))
+	{
+		if (dp_len(input) == 1)
+			return (-1);
+		else
+			ft_putstr("exit : Exxpression Syntax.");
+		return (1);
+	}
+	if (ft_strequ(input[0], "env"))
+		return (run_env(input, *m_env));
+	if (ft_strequ(input[0], "setenv"))
+		return (run_setenv(input, m_env));
+	if (ft_strequ(input[0], "unsetenv"))
+		return (run_unsetenv(input, m_env));
+//	if (ft_strequ(input[0], "cd"))
+//		return (run_cd(input, m_env));
+//	if (ft_strequ(input[0], "echo"))
+//		return (run_echo(input, m_env));
+	return (0);
+}
+
 int		is_bin(char **input, t_env *m_env)
 {
 	struct stat st;
@@ -93,51 +94,16 @@ int		is_bin(char **input, t_env *m_env)
 		{
 			if (check_exec(exc, st, input, m_env))
 			{
-				free(exc);
+				ft_strdel(&exc);
 				free_tab(&path);
 				return (1);
 			}
 		}
-		free(exc);
+		ft_strdel(&exc);
 		i++;
 	}
 	free_tab(&path);
 	return (0);
 }
 
-int		ft_check_one_cmd(char **input, t_env **m_env)
-{
-		int				x;
-		struct stat		st;
-
-		x = is_builtin(input, m_env);
-		if (x == -1)
-			return (-1);
-		if (x == 1 || is_bin(input, *m_env))
-			return (1);
-		printf("**NO BINS**\n");
-		if (lstat(input[0], &st) != -1)
-			return(check_exec(input[0], st, input, *m_env));
-		return (0);
-}
-
-int     ft_check_cmds(char **cmds, t_env **m_env)
-{
-	char		**input;
-	int			x;
-	int			i;
-
-	i = 0;
-	while (cmds[i])
-	{
-		input = ft_strsplits(cmds[i]);
-		x = ft_check_one_cmd(input, m_env);
-		if (x == -1)
-			return (-1);
-		if (x == 0)
-			ft_put3str("00minishell: command not found: ", input[0], "\n");
-		i++;
-	}
-	return (1);
-}
 
