@@ -49,7 +49,7 @@ t_env         *create_maillon(void)
 {
     t_env *l;
 
-     l = (t_env *)malloc(sizeof(t_env));
+     l = (t_env *)ft_memalloc(sizeof(t_env));
      l->next = NULL;
     return (l);
 }
@@ -96,6 +96,8 @@ void	free_tab(char ***tab)
 	int		i;
 	char	**tmp;
 
+	if (!tab || !(**tab) || !(*tab))
+		return ;
 	tmp = *tab;
 	i = 0;
 	if (tmp)
@@ -153,4 +155,15 @@ char    **ft_lsttoarr(t_env *env)
         }
         str[i] = NULL;
         return (str);
+}
+
+
+t_cmds         *create_node(void)
+{
+    t_cmds *l;
+
+     l = (t_cmds *)ft_memalloc(sizeof(t_cmds));
+     l->next = NULL;
+	 l->argv = NULL;
+    return (l);
 }

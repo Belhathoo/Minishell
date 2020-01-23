@@ -13,8 +13,8 @@
 NAME = minishell
 
 SRC = main.c extract_cmds.c ft_lstsplit.c fctns.c
-SRC += environment.c run_env.c run_cd.c run_setenv.c
-SRC += run_unsetenv.c
+SRC += run_unsetenv.c run_env.c run_cd.c run_setenv.c
+SRC += environment.c parsing.c
 
 SRCS = $(SRC:%=srcs/%)
 OBJS = $(SRC:%.c=objs/%.o)
