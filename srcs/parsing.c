@@ -101,14 +101,14 @@ int       check_expansions(char **arg, t_env *m_env)
 {
     int     i;
     int     j;
-    char    *tmp;
-    char    *tmp1;
+    char    *tmp = NULL;
+    char    *tmp1 = NULL;
     t_env   *pos;
 
     i = 0;
     while ((*arg)[i])
     {
-        if ((*arg)[i] == '$')
+        if ((*arg)[i] == '$' && arg[i + 1])
         {
             tmp = ft_strjoin((*arg) + i + 1, "=");
             pos = find_var_pos(tmp, m_env);
@@ -116,12 +116,19 @@ int       check_expansions(char **arg, t_env *m_env)
             {
                 ft_putstr((*arg) + i + 1);
                 ft_putendl(": Undefined variable");
+                ft_strdel(&tmp);
                 return (0);
             }
+            else
+            {   
+                printf("LOLO");
+                //ft_strdel(arg);
+                (*arg) = ft_strjoin(tmp1, pos->var);
+                return (1);
+            }
         }
-        
-        else
-            tmp1[i] = ft_strdup((*arg[i]));
+        else if ((*arg)[i])
+            tmp1[i] = (*arg)[i];
         i++;
     }
     return (1);
@@ -141,7 +148,8 @@ t_cmds      *parse_cmd(char *line, t_env *m_env)
     head = cmds;
     while ((arg = get_next_argument(line, &i, &pv)))
     {
-        check_expansions(&arg, m_env);
+        //check_expansions(&arg, m_env);
+        cmds->argv = join_array(cmds->argv, arg);
         // if (pv != 0)
         // {
         //     printf("next\n");
@@ -154,12 +162,13 @@ t_cmds      *parse_cmd(char *line, t_env *m_env)
         // }     
         // else
         //printf("|%s\n", arg);
-            cmds->argv = join_array(cmds->argv, arg);
         pv = 0;
     }
     cmds = head;
     return (cmds);
 }
+
+
 
 
 
@@ -183,22 +192,6 @@ t_cmds      *parse_cmd(char *line, t_env *m_env)
 //         cmds = cmds->next;
 //     }
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
