@@ -40,15 +40,16 @@ char    *ft_strndup_cmd(char *cmd, size_t n)
     return (arg);
 }
 
+
 char    *get_next_argument(char *line, size_t *i, int *pv)
 {
-    char *arg;
+    char    *arg;
+    char    *a;
     int balance = 0;
     int j;
     
     while (line[*i] && (line[*i] == ' ' || line[*i] == '\t'))
         (*i)++;
-
     if (!line[*i])
         return (NULL);
     j = *i;
@@ -63,13 +64,12 @@ char    *get_next_argument(char *line, size_t *i, int *pv)
         //    (*pv) = 1;
         //     break ;
         // }
-        if (line[*i] == ' ' && !balance )
+        if (line[*i] == ' ' && !balance)
            break ;
         (*i)++;
     } 
+    
     arg = ft_strndup_cmd(&line[j], (*i) - j);
-//    if (line[*i] == ';' && !balance)
-//         (*i)++;
     return (arg);
 }
 
@@ -97,40 +97,45 @@ char    **join_array(char **array, char *arg)
     return (new_array);
 }
 
-int       check_expansions(char **arg, t_env *m_env)
+int		expansions_check(char **arg, t_env *m_env)
 {
-    int     i;
+	int		i;
     int     j;
-    char    *tmp = NULL;
-    char    *tmp1 = NULL;
-    t_env   *pos;
+	t_env	*pos;
+    char    *tmp;
 
-    i = 0;
-    while ((*arg)[i])
+	i = 0;
+    j = 0;
+	if (!ft_strcmp(*arg, "$") || !ft_strchr((*arg), '$'))
+		return (1);
+    while ((*arg)[i] && (*arg)[i] != '$')
+        i++;
+    if (!(*arg)[i + 1])
+        return (1);
+    pos = find_var_pos(ft_strchr((*arg), '$') + 1, m_env);
+	if (!pos)
+	{
+		ft_putstr((*arg) + i + 1);
+        ft_putendl(": Undefined variable");
+		return (0);
+	}
+    tmp = (char *)ft_memalloc(i + ft_strlen(pos->var) + 1);
+    while ((*arg)[i] && (*arg)[i] != '$')
     {
-        if ((*arg)[i] == '$' && arg[i + 1])
-        {
-            tmp = ft_strjoin((*arg) + i + 1, "=");
-            pos = find_var_pos(tmp, m_env);
-            if (!pos)
-            {
-                ft_putstr((*arg) + i + 1);
-                ft_putendl(": Undefined variable");
-                ft_strdel(&tmp);
-                return (0);
-            }
-            else
-            {   
-                printf("LOLO");
-                //ft_strdel(arg);
-                (*arg) = ft_strjoin(tmp1, pos->var);
-                return (1);
-            }
-        }
-        else if ((*arg)[i])
-            tmp1[i] = (*arg)[i];
+        tmp[j] = (*arg)[i];
+        j++;
         i++;
     }
+    i = 0;
+    while (pos->var[i])
+    {
+        tmp[j] = pos->var[i];
+        j++;
+        i++;
+    }
+    tmp[j] = '\0';
+    ft_strdel(arg);
+    (*arg) = tmp;
     return (1);
 }
 
@@ -144,11 +149,17 @@ t_cmds      *parse_cmd(char *line, t_env *m_env)
 
     i = 0;
     cmds = create_node();
-    cmds->argv = NULL;
     head = cmds;
     while ((arg = get_next_argument(line, &i, &pv)))
     {
-        //check_expansions(&arg, m_env);
+        if (expansions_check(&arg, m_env) == 0)
+        {
+            free_tab(&cmds->argv);
+            free(cmds);
+            ft_strdel(&arg);
+            return (NULL);
+        }
+        printf("|%s\n", arg);
         cmds->argv = join_array(cmds->argv, arg);
         // if (pv != 0)
         // {
@@ -162,8 +173,9 @@ t_cmds      *parse_cmd(char *line, t_env *m_env)
         // }     
         // else
         //printf("|%s\n", arg);
-        pv = 0;
+        // pv = 0;
     }
+    ft_strdel(&arg);
     cmds = head;
     return (cmds);
 }
@@ -172,26 +184,28 @@ t_cmds      *parse_cmd(char *line, t_env *m_env)
 
 
 
-// int main(int ac, char **av)
-// {
-//     //char **arg;
-//     t_cmds *cmds;
+int main(int ac, char **av, char **env)
+{
+    //char **arg;
+    t_cmds *cmds;
+    t_env   *m_env;
 
-//     cmds = parse_cmd(av[1]);
+    m_env = get_m_env(env);
+    cmds = parse_cmd(av[1], m_env);
     
-//     size_t i = 0;
-//     while (cmds)
-//     {
-//         i = 0;
-//         while (cmds->argv[i])
-//         {
-//             printf("arg[%zu] = '%s'\t", i, cmds->argv[i]);
-//             i++;
-//         }
-//         printf("\n");
-//         cmds = cmds->next;
-//     }
-// }
+    size_t i;
+    while (cmds && cmds->argv)
+    {
+        i = 0;
+        while (cmds->argv[i])
+        {
+            printf("arg[%zu] = '%s'\t", i, cmds->argv[i]);
+            i++;
+        }
+        printf("\n");
+        cmds = cmds->next;
+    }
+}
 
 
 

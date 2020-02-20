@@ -96,7 +96,7 @@ void	free_tab(char ***tab)
 	int		i;
 	char	**tmp;
 
-	if (!tab || !(**tab) || !(*tab))
+	if (!tab || !(*tab) || !(**tab))
 		return ;
 	tmp = *tab;
 	i = 0;

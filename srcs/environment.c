@@ -117,9 +117,49 @@ void		set_var(char *name, char *value, t_env **env)
 
 
 
+// int        check_expansions(char **arg, t_env *m_env)
+// {
+//     int     i;
+//     int     j;
+//     char    *tmp = NULL;
+//     char    *tmp1 = NULL;
+//     t_env   *pos;
 
-
-
+//     i = 0;
+//     if (!arg || !(*arg)[i])
+//         return (0);
+//     while ((*arg)[i] && (*arg)[i] != '$')
+//         i++;
+//     if (i == ft_strlen(arg))
+//         return (0);
+//     if (!(tmp = (char *)ft_memalloc(sizeof(char) * i + 1)))
+//         return (0);
+//     j = i;
+//     i  = 0;
+//     while ((*arg)[i])
+//     {
+//         if (!arg[i + 1] || (*arg)[i] != '$')
+//             tmp[i] = (*arg)[i];  
+//         else
+//         {
+//             tmp[i] = '\0';
+//             if (!(pos = find_var_pos(arg + i + 1, m_env)))
+//             {
+//                 ft_strdel(&tmp);
+//                 ft_putstr(arg + i + 1);
+//                 ft_putendl(": Undefined variable");
+//                 break;
+//             }
+//             else
+//             {   
+//                 tmp1 = ft_strjoin(tmp, ft_strchr(pos->var, '=') + 1);
+//                 free(tmp);
+//                 return (tmp1);
+//             }
+//         }
+//         i++;
+//     }
+//  `
 
 
 

@@ -88,7 +88,7 @@ int     main(int ac, char **av, char **env)
     t_env       *m_env;
 
     input = NULL;
-    cmds = create_node();
+    //cmds = create_node();
     m_env = get_m_env(env);
     //m_env = NULL;
     
