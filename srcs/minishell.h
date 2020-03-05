@@ -39,6 +39,8 @@ void        ft_alloc(t_env **param, t_env **curr, t_env **tt);
 t_cmds      *create_node(void);
 
 t_cmds      *parse_cmd(char *line, t_env *env);
+int		expansions_check(char **arg, t_env *m_env);
+
 
 t_env       *get_m_env(char **env);
 void        display_m_env(t_env *m_env);
