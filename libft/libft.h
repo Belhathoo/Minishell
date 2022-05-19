@@ -17,10 +17,9 @@
 # include <stdlib.h>
 # include <string.h>
 
-# define SPA(x) (x == ' ' || x == '\t' || x == '\r' || x == '\f')
-# define BUFF_SIZE 10
+# define BUFF_SIZE 50
 
-typedef struct	s_list
+typedef struct s_list
 {
 	void			*content;
 	size_t			content_size;
@@ -33,6 +32,7 @@ int				ft_isalnum(int c);
 int				ft_isalpha(int c);
 int				ft_isascii(int c);
 int				ft_isdigit(int c);
+int				ft_isempty(char **str);
 int				ft_isprint(int c);
 void			*ft_memccpy(void *dst, const void *src, int c, size_t n);
 void			*ft_memchr(const void *s, int c, size_t n);
@@ -42,10 +42,12 @@ void			*ft_memmove(void *dst, const void *src, size_t len);
 void			*ft_memset(void *b, int c, size_t len);
 char			*ft_strcat(char *dest, const char *src);
 char			*ft_strchr(const char *s, int c);
+char			*ft_strechr(const char *s, int c);
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strcpy(char *dest, const char *src);
 char			*ft_strdup(const char *src);
 size_t			ft_strlen(const char *s);
+size_t			ft_strlen2( char **s);
 char			*ft_strncat(char *dest, const char *src, int nb);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strncpy(char *dest, const char *src, size_t n);
@@ -63,6 +65,12 @@ int				ft_strequ(char const *s1, char const *s2);
 void			ft_striter(char *s, void (*f)(char*));
 void			ft_striteri(char *s, void (*f)(unsigned int, char*));
 char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_strjoin2(char *s1, char *s2, int tofree);
+char			*ft_strchjoin(const char *s1, char c);
+char			*ft_strchjoinf(char *s1, char c);
+int				ft_strstartswith(char *s1, char *s2);
+int				ft_strendswith(char *s1, char *s2);
+int				is_first_word(char *s1, char *s2);
 char			*ft_strmap(char const *s, char (*f)(char));
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int				ft_strnequ(char const *s1, char const *s2, size_t n);
@@ -70,9 +78,15 @@ char			*ft_strnew(size_t size);
 int				ft_word_size(char const *str, char c, int k);
 int				ft_nbr_words(char const *str, char c);
 char			**ft_strsplit(char const *s, char c);
+char			**ft_strsplits(char const *s);
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
 char			*ft_strtrim(char const *s);
 void			ft_putstr(char const *s);
+void			ft_putnstr(char *str, int n);
+void			ft_put2str(char const *s, char const *s1);
+void			ft_put3str(char const *s, char const *s1, char const *s2);
+void			ft_put4str(char const *s, char const *s1, \
+				char const *s2, char const *s3);
 void			ft_putendl(char const *s);
 void			ft_putnbr(int nb);
 void			ft_putchar_fd(char c, int fd);
@@ -98,5 +112,7 @@ int				ft_str_is_lowercase(char *str);
 int				ft_str_is_alpha(char *str);
 int				ft_nbr_size(int *n, int *test, int *str_size);
 int				get_next_line(int fd, char **line);
-char			**ft_strsplits(char *s);
+void			ft_free(char ***to);
+void			*ft_realloc(void **ptr, size_t old, size_t len);
+
 #endif

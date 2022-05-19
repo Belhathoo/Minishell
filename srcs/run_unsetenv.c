@@ -1,72 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_unsetenv.c                                     :+:      :+:    :+:   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/20 18:30:34 by belhatho          #+#    #+#             */
-/*   Updated: 2020/01/20 18:30:47 by belhatho         ###   ########.fr       */
+/*   Created: 2022/01/18 22:15:06 by belhatho          #+#    #+#             */
+/*   Updated: 2022/01/18 22:15:09 by belhatho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
-void		unset_var(char *var, t_env **m_env)
+static void	unset_var(char *input)
 {
-	t_env	*env;
-	t_env	*previous;
-	t_env	*tmp;
-    char    *name;
+	int	pos;
+	int	i;
+	int	var_count;
 
-	if ((*m_env) == NULL)
-		return ;
-	previous = (*m_env);
-	name = ft_strjoin(var, "=");
-    if (is_first_word(previous->var, name))
+	pos = find_var_index(input);
+	if (g_env[pos])
 	{
-		(*m_env) = previous->next;
-		ft_strdel(&previous->var);
-		free(previous);
-        previous = NULL;
-		return ;
-	}
-	tmp = previous->next;
-	while (tmp)
-	{
-		if (is_first_word(tmp->var, name))
+		free(g_env[pos]);
+		g_env[pos] = NULL;
+		i = pos;
+		var_count = pos + 1;
+		while (g_env[i + 1])
 		{
-            previous->next = tmp->next;
-			ft_strdel(&tmp->var);
-			free(&tmp);
-			return ;
+			g_env[i] = ft_strdup(g_env[i + 1]);
+			free(g_env[i + 1]);
+			i++;
+			var_count++;
 		}
-		previous = tmp;
-		tmp = tmp->next;
+		g_env[i] = 0;
+		g_env = realloc_env(var_count - 1);
 	}
-    ft_strdel(&name);
 }
 
-int     run_unsetenv(char **input, t_env **m_env)
+int	run_unsetenv(char **input)
 {
-    int     len;
-    int     i;
-    t_env   *env;
+	int	i;
 
-    i = 1;
-    env = *m_env;
-    len = dp_len(input);
-    if (len == 1)
-        ft_putendl("unsetenv: Too few arguments.");
-    else
-    {
-        while (input[i])
-        {
-            unset_var(input[i], m_env);
-            i++;
-        }
-    }
-    if (env)
-        (*m_env) = env;
-    return (1);
+	i = 0;
+	if (!input || !input[1])
+		ft_putendl("unsetenv: Too few arguments.");
+	else
+	{
+		while (input && input[++i])
+			unset_var(input[i]);
+	}
+	return (1);
 }

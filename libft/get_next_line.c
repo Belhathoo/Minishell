@@ -12,12 +12,13 @@
 
 #include "libft.h"
 
-int		ft_read_fd(char **save, char *buf, int fd)
+int	ft_read_fd(char **save, char *buf, int fd)
 {
 	char	*tmp;
 	int		nbr_oct;
 
-	while ((nbr_oct = read(fd, buf, BUFF_SIZE)) > 0)
+	nbr_oct = read(fd, buf, BUFF_SIZE);
+	while (nbr_oct > 0)
 	{
 		buf[nbr_oct] = '\0';
 		tmp = ft_strdup(*save);
@@ -26,6 +27,7 @@ int		ft_read_fd(char **save, char *buf, int fd)
 		free(tmp);
 		if (ft_strchr(buf, '\n'))
 			break ;
+		nbr_oct = read(fd, buf, BUFF_SIZE);
 	}
 	return (nbr_oct);
 }
@@ -44,7 +46,7 @@ void	ft_affect_line(char **line, char **save, int i)
 	free(tmp);
 }
 
-int		get_next_line(const int fd, char **line)
+int	get_next_line(const int fd, char **line)
 {
 	static char	*save[4864];
 	char		*buf;
@@ -52,8 +54,8 @@ int		get_next_line(const int fd, char **line)
 	int			i;
 
 	i = 0;
-	if (!(buf = ft_strnew(BUFF_SIZE + 1)) ||
-			fd == -1 || fd > 4864 || !line || read(fd, buf, 0) < 0)
+	buf = ft_strnew(BUFF_SIZE + 1);
+	if (!(buf) || fd == -1 || fd > 4864 || !line || read(fd, buf, 0) < 0)
 	{
 		free(buf);
 		return (-1);

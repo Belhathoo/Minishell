@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/20 02:16:01 by belhatho          #+#    #+#             */
-/*   Updated: 2019/05/20 02:16:22 by belhatho         ###   ########.fr       */
+/*   Created: 2021/11/12 01:08:40 by belhatho          #+#    #+#             */
+/*   Updated: 2021/11/12 01:08:46 by belhatho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isascii(int c)
+void	*ft_realloc(void **ptr, size_t old, size_t len)
 {
-	if (c <= 127 && c >= 0)
-		return (1);
-	return (0);
+	void	*real;
+
+	real = malloc(len);
+	ft_memset(real, 0, len);
+	if (real)
+		ft_memcpy(real, *ptr, old);
+	if (*ptr)
+		free(*ptr);
+	return (real);
 }

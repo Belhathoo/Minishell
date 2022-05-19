@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/20 02:16:01 by belhatho          #+#    #+#             */
-/*   Updated: 2019/05/20 02:16:22 by belhatho         ###   ########.fr       */
+/*   Created: 2022/03/14 03:58:28 by belhatho          #+#    #+#             */
+/*   Updated: 2022/03/14 03:58:50 by belhatho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_isascii(int c)
+void	ft_child_signal(int signo)
 {
-	if (c <= 127 && c >= 0)
-		return (1);
-	return (0);
+	if (signo == SIGINT)
+	{
+		ft_putstr("\n");
+		signal(SIGINT, ft_child_signal);
+	}
+}
+
+void	ft_signal(int signo)
+{
+	if (signo == SIGINT)
+	{
+		ft_putstr("\n");
+		prompt();
+		signal(SIGINT, ft_signal);
+	}
 }

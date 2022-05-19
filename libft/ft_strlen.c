@@ -17,7 +17,17 @@ size_t	ft_strlen(const char *s)
 	size_t			size;
 
 	size = 0;
-	while (s[size])
+	while (s && s[size])
 		size++;
 	return (size);
+}
+
+size_t	ft_strlen2(char **twodim)
+{
+	int		s;
+
+	s = 0;
+	while (twodim && twodim[s])
+		s++;
+	return (s);
 }

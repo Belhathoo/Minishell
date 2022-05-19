@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int		ft_nbr_words(char const *str, char c)
+int	ft_nbr_words(char const *str, char c)
 {
 	int		nbr;
 	int		i;

@@ -21,5 +21,5 @@ char	*ft_strrchr(const char *s, int c)
 	while (*s != c)
 		s--;
 	s++;
-	return ((char*)s);
+	return ((char *)s);
 }

@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int		ft_word_size(char const *str, char c, int k)
+int	ft_word_size(char const *str, char c, int k)
 {
 	int		word_size;
 

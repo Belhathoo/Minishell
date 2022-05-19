@@ -12,10 +12,16 @@
 
 #include "libft.h"
 
+int	surdix(int *test)
+{
+	*test /= 10;
+	return (*test);
+}
+
 void	ft_putnbr_fd(int nb, int fd)
 {
-	int size;
-	int test;
+	int	size;
+	int	test;
 
 	if (nb < 0)
 	{
@@ -29,7 +35,7 @@ void	ft_putnbr_fd(int nb, int fd)
 	}
 	size = 1;
 	test = nb;
-	while ((test /= 10) != 0)
+	while (surdix(&test) != 0)
 		size *= 10;
 	while (size != 0)
 	{

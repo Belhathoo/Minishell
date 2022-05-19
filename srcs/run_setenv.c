@@ -1,33 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_setenv.c                                       :+:      :+:    :+:   */
+/*   builtin_setenv.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/16 14:42:58 by belhatho          #+#    #+#             */
-/*   Updated: 2020/01/16 14:43:01 by belhatho         ###   ########.fr       */
+/*   Created: 2022/01/18 22:14:54 by belhatho          #+#    #+#             */
+/*   Updated: 2022/05/12 04:28:41 by belhatho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     run_setenv(char **input, t_env **m_env)
+void	set_env_var(char *key, char *value)
 {
-    int     len;
-    t_env   *env;
+	int		pos;
+	char	*tmp;
 
-    env = *m_env;
-    len = dp_len(input);
-    if (len == 1)
-        display_m_env(*m_env);
-    else if (len == 2)
-        set_var(input[1], "", m_env);
-    else if (len == 3)
-        set_var(input[1], input[2], m_env);
-    else
-        ft_putstr("setenv: Too many arguments.\n");
-    if (env)
-        (*m_env) = env;
-    return (1);
+	pos = find_var_index(key);
+	tmp = ft_strjoin("=", value);
+	if (g_env[pos])
+	{
+		free(g_env[pos]);
+		g_env[pos] = ft_strjoin(key, tmp);
+	}
+	else
+	{
+		g_env = realloc_env(pos + 1);
+		g_env[pos] = ft_strjoin(key, tmp);
+	}
+	if (value)
+		free(tmp);
+}
+
+int	run_setenv(char **input)
+{
+	int	len;
+
+	len = ft_strlen2(input);
+	if (len == 1)
+		print_env();
+	else if (len == 2)
+		set_env_var(input[1], "");
+	else if (len == 3)
+		set_env_var(input[1], input[2]);
+	else
+		ft_putstr("setenv: Too many arguments.\n");
+	return (1);
 }

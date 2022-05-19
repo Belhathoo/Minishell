@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int		ft_nbr_size(int *n, int *test, int *str_size)
+int	ft_nbr_size(int *n, int *test, int *str_size)
 {
 	int		size;
 	int		copy;
@@ -28,10 +28,12 @@ int		ft_nbr_size(int *n, int *test, int *str_size)
 		(*str_size)++;
 	}
 	size = 1;
-	while ((copy /= 10) != 0)
+	copy /= 10;
+	while (copy != 0)
 	{
 		size *= 10;
 		(*str_size)++;
+		copy /= 10;
 	}
 	return (size);
 }
