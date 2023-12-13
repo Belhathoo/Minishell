@@ -1,17 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   environment1.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/24 04:50:10 by belhatho          #+#    #+#             */
-/*   Updated: 2022/02/24 04:50:12 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
+/**
+ * do_path - do_path programm
+ * @name: name
+ * @d_name: d_name
+ * Return: char
+ */
 char	*do_path(char *name, char *d_name)
 {
 	char	*tmp;
@@ -37,6 +31,11 @@ char	*do_path(char *name, char *d_name)
 	}
 }
 
+/**
+ * get_var - get_var programm
+ * @name: name
+ * Return: char
+ */
 char	*get_var(char *name)
 {
 	int		i;
@@ -58,6 +57,11 @@ char	*get_var(char *name)
 	return (NULL);
 }
 
+/**
+ * find_var_index - find_var_index programm
+ * @var: var
+ * Return: char
+ */
 int	find_var_index(char *var)
 {
 	int		i;

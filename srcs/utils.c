@@ -1,17 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/14 04:34:07 by belhatho          #+#    #+#             */
-/*   Updated: 2022/05/12 04:30:12 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
+/**
+ * isspce - isspce programm
+ * @c: c
+ * Return: char
+ */
 int	isspce(char c)
 {
 	if (c == ' ' || c == '\t')
@@ -19,6 +12,9 @@ int	isspce(char c)
 	return (0);
 }
 
+/**
+ * free_exit - free_exit programm
+ */
 void	free_exit(void)
 {
 	ft_free(&g_env);
@@ -26,6 +22,13 @@ void	free_exit(void)
 	exit(0);
 }
 
+/**
+ * strreplace - strreplace programm
+ * @haystack: input
+ * @needle: input
+ * @str: input
+ * Return: char
+ */
 char	*strreplace(char *haystack, char *needle, char *str)
 {
 	char	*tmp;

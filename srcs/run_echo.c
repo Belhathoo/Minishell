@@ -1,17 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_echo.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/18 22:14:41 by belhatho          #+#    #+#             */
-/*   Updated: 2022/01/18 22:14:42 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
+/**
+ * check_flag - check_flag programm
+ * @arg: arg
+ * @n: n
+ * Return: char
+ */
 static int	check_flag(char *arg, int n)
 {
 	int	i;
@@ -28,6 +22,11 @@ static int	check_flag(char *arg, int n)
 	return (1);
 }
 
+/**
+ * check_quote - check_quote programm
+ * @input: input
+ * Return: char
+ */
 void	check_quote(char *input)
 {
 	int	start;
@@ -51,6 +50,11 @@ void	check_quote(char *input)
 		ft_putstr(input);
 }
 
+/**
+ * run_echo - run_echo programm
+ * @input: input
+ * Return: char
+ */
 int	run_echo(char **input)
 {
 	int	i;
@@ -58,8 +62,7 @@ int	run_echo(char **input)
 
 	i = -1;
 	n = 0;
-	while (input[++i] && ft_strequ(input[i], "-n") && \
-	check_flag(input[i], 'n'))
+	while (input[++i] && ft_strequ(input[i], "-n") && check_flag(input[i], 'n'))
 		n = 1;
 	while (input[i])
 	{

@@ -1,17 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/18 22:15:06 by belhatho          #+#    #+#             */
-/*   Updated: 2022/01/18 22:15:09 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
+/**
+ * unset_var - unset_var programm
+ * @input: input
+ * Return: char
+ */
 static void	unset_var(char *input)
 {
 	int	pos;
@@ -37,6 +30,11 @@ static void	unset_var(char *input)
 	}
 }
 
+/**
+ * run_unsetenv - run_unsetenv programm
+ * @input: input
+ * Return: char
+ */
 int	run_unsetenv(char **input)
 {
 	int	i;

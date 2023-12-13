@@ -1,28 +1,21 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_input.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/18 22:13:55 by belhatho          #+#    #+#             */
-/*   Updated: 2022/01/18 22:13:56 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "minishell.h"
 
-#include"minishell.h"
-
-char	*parse_home(char *path)
+/**
+ * parse_home - parse_home programm
+ * @path: path
+ * Return: char
+ */
+char *parse_home(char *path)
 {
-	char	*home_path;
-	char	*ret;
+	char *home_path;
+	char *ret;
 
 	if (!path)
 		return (NULL);
 	home_path = get_var("HOME");
-	if ((!ft_strstartswith(path, "~")) || \
-			(!ft_strstartswith(path, home_path)))
-		return (ft_strdup (path));
+	if ((!ft_strstartswith(path, "~")) ||
+		(!ft_strstartswith(path, home_path)))
+		return (ft_strdup(path));
 	if (*(path + ft_strlen(home_path)) == '\0')
 		ret = ft_strdup("~");
 	else
@@ -30,15 +23,21 @@ char	*parse_home(char *path)
 	return (ret);
 }
 
-char	*parse_dollar(char *input, int index)
+/**
+ * parse_dollar - parse_dollar programm
+ * @input: input
+ * @index: index
+ * Return: char
+ */
+char *parse_dollar(char *input, int index)
 {
-	char	*key;
-	char	*val;
-	char	c;
+	char *key;
+	char *val;
+	char c;
 
 	key = ft_strnew(0);
-	while (input[index] && !isspce(input[index]) \
-	&& input[index] != ';' && input[index] != '$')
+	while (input[index] && !isspce(input[index]) &&
+		   input[index] != ';' && input[index] != '$')
 	{
 		c = input[index];
 		key = ft_strchjoinf(key, c);
@@ -49,10 +48,15 @@ char	*parse_dollar(char *input, int index)
 	return (val);
 }
 
-char	*parsetilde(char *rt)
+/**
+ * parsetilde - parsetilde programm
+ * @rt: rt
+ * Return: char
+ */
+char *parsetilde(char *rt)
 {
-	char	*tmp;
-	char	*ret;
+	char *tmp;
+	char *ret;
 
 	tmp = do_path(get_var("HOME"), "/");
 	if (rt)
@@ -63,18 +67,26 @@ char	*parsetilde(char *rt)
 	return (ret);
 }
 
-char	*parse_expansions(char *rt, char *in, int *n)
+/**
+ * parse_expansions - parse_expansions programm
+ * @rt: argc
+ * @in: argv
+ * @n: environment the parameter
+ * Return: Always 0 (Success)!
+ */
+
+char *parse_expansions(char *rt, char *in, int *n)
 {
-	char	*ret;
-	int		i;
+	char *ret;
+	int i;
 
 	i = *n;
 	ret = NULL;
 	if (in[i] == '$' && in[i + 1])
 	{
 		ret = ft_strjoin(rt, parse_dollar(in, i + 1));
-		while (in[i + 1] && !isspce(in[i + 1]) && in[i + 1] != '$'\
-		&& in[i + 1] != ';')
+		while (in[i + 1] && !isspce(in[i + 1]) &&
+			   in[i + 1] != '$' && in[i + 1] != ';')
 			i++;
 	}
 	else if (in[i] == '~' && ((i != 0 && isspce(in[i - 1])) || i == 0))
@@ -86,10 +98,15 @@ char	*parse_expansions(char *rt, char *in, int *n)
 	return (ret);
 }
 
-void	parser(char **input)
+/**
+ * parser - parser
+ * @input: input
+ */
+
+void parser(char **input)
 {
-	char	*ret;
-	int		i;
+	char *ret;
+	int i;
 
 	i = -1;
 	ret = NULL;

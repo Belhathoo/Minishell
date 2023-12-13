@@ -1,22 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/18 22:13:33 by belhatho          #+#    #+#             */
-/*   Updated: 2022/05/12 04:06:12 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+/**
+ * g_en - g_en programm
+*/
 char **g_env;
 
-void	prompt(void)
+
+/**
+ * prompt - prompt programm
+*/
+
+void prompt(void)
 {
-	char	*pwd;
-	char	buff[4097];
+	char *pwd;
+	char buff[4097];
 
 	pwd = getcwd(buff, 4096);
 	ft_put4str("\033[1;36m", get_var("USER"), "@\033[1;34m", "my_sh");
@@ -25,16 +22,21 @@ void	prompt(void)
 	else if (!ft_strcmp(pwd, get_var("HOME")))
 		ft_put3str("\033[1;31m ", "~", "\033[0;33m $ \033[0m");
 	else
-		ft_put3str("\033[1;31m ", ft_strechr(pwd, '/') + 1, \
-			"\033[0;33m $ \033[0m");
+		ft_put3str("\033[1;31m ", ft_strechr(pwd, '/') + 1, "\033[0;33m $ \033[0m");
 }
 
-char	*input_handler(void)
+
+/**
+ * input_handler - input_handler programm
+ * Return: getline input
+ */
+
+char *input_handler(void)
 {
-	char	*input;
-	char	buf;
-	int		nbr_oct;
-	int		i[2];
+	char *input;
+	char buf;
+	int nbr_oct;
+	int i[2];
 
 	input = ft_strnew(0);
 	i[0] = 0;
@@ -58,10 +60,20 @@ char	*input_handler(void)
 	return (input);
 }
 
-int	main(int ac, char **av, char **env)
+/**
+ * main - main programm
+ * Description: program description
+ * @ac: argc
+ * @av: argv
+ * @env: environment the parameter
+ *
+ * Return: Always 0 (Success)!
+ */
+
+int main(int ac, char **av, char **env)
 {
-	char	*input;
-	char	**cmds;
+	char *input;
+	char **cmds;
 
 	input = NULL;
 	init_environment(ac, av, env);
@@ -71,13 +83,13 @@ int	main(int ac, char **av, char **env)
 		signal(SIGINT, ft_signal);
 		input = input_handler();
 		if (ft_isempty(&input))
-			continue ;
+			continue;
 		cmds = ft_strsplit(input, ';');
 		free(input);
 		if (execution(&cmds) == -1)
 		{
 			ft_putendl("\033[0;31m my_sh terminated.\033[0m");
-			break ;
+			break;
 		}
 	}
 	ft_free(&g_env);

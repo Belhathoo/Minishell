@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/18 22:15:25 by belhatho          #+#    #+#             */
-/*   Updated: 2022/01/18 22:15:26 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
@@ -19,7 +7,6 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <signal.h>
-// # include "../libft/libft.h"
 
 extern char **g_env;
 
@@ -56,9 +43,11 @@ char *strreplace(char *haystack, char *needle, char *str);
 int isspce(char c);
 void free_exit(void);
 
-///// UTILS ///////
+/*
+ * UTILS
+ */
 
-void			ft_putchar(char c);
+void ft_putchar(char c);
 void ft_putstr(char const *s);
 void ft_put2str(char const *s, char const *s1);
 void ft_put3str(char const *s, char const *s1, char const *s2);

@@ -1,17 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/18 22:14:36 by belhatho          #+#    #+#             */
-/*   Updated: 2022/05/16 16:11:53 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
+/**
+ * cd_error - cd_error programm
+ * @path: path
+ * Return: char
+ */
 void	cd_error(char *path)
 {
 	ft_putstr("cd: ");
@@ -24,6 +17,11 @@ void	cd_error(char *path)
 	ft_putendl(path);
 }
 
+/**
+ * ft_chdir - ft_chdir programm
+ * @path: path
+ * @print: print
+ */
 void	ft_chdir(char *path, int print)
 {
 	char	*cwd;
@@ -44,7 +42,11 @@ void	ft_chdir(char *path, int print)
 	else
 		cd_error(path);
 }
-
+/**
+ * has_two_args - has_two_args programm
+ * @args: args
+ * Return: char
+ */
 static int	has_two_args(char **args)
 {
 	char	*cwd;
@@ -70,6 +72,11 @@ static int	has_two_args(char **args)
 	return (1);
 }
 
+/**
+ * run_cd - run_cd programm
+ * @input: input
+ * Return: char
+ */
 int	run_cd(char **input)
 {
 	char	*home;

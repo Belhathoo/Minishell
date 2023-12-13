@@ -1,17 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_setenv.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/18 22:14:54 by belhatho          #+#    #+#             */
-/*   Updated: 2022/05/12 04:28:41 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
+/**
+ * set_env_var - set_env_var programm
+ * @key: key
+ * @value: value
+ * Return: char
+ */
 void	set_env_var(char *key, char *value)
 {
 	int		pos;
@@ -33,6 +27,11 @@ void	set_env_var(char *key, char *value)
 		free(tmp);
 }
 
+/**
+ * run_setenv - run_setenv programm
+ * @input: input
+ * Return: char
+ */
 int	run_setenv(char **input)
 {
 	int	len;

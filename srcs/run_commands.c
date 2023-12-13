@@ -1,17 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/03 15:19:03 by belhatho          #+#    #+#             */
-/*   Updated: 2022/05/16 13:36:50 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
+/**
+ * run - run programm
+ * @cmd: cmd
+ * @input: path
+ * Return: char
+ */
 int	run(char *cmd, char **input)
 {
 	pid_t	pid;
@@ -32,6 +26,13 @@ int	run(char *cmd, char **input)
 	return (1);
 }
 
+/**
+ * check_exec - check_exec programm
+ * @path: path
+ * @st: st
+ * @in: in
+ * Return: char
+ */
 int	check_exec(char *path, struct stat st, char ***in)
 {
 	char	**input;
@@ -61,6 +62,11 @@ int	check_exec(char *path, struct stat st, char ***in)
 	return (0);
 }
 
+/**
+ * check_one_cmd - check_one_cmd programm
+ * @input: input
+ * Return: char
+ */
 int	check_one_cmd(char ***input)
 {
 	int			isbuiltin;
@@ -82,6 +88,11 @@ int	check_one_cmd(char ***input)
 	return (0);
 }
 
+/**
+ * execution - execution programm
+ * @commandss: commands
+ * Return: char
+ */
 int	execution(char ***commandss)
 {
 	int		i;
@@ -97,7 +108,7 @@ int	execution(char ***commandss)
 		cmd = ft_strsplits(commands[i]);
 		ret = check_one_cmd(&cmd);
 		if (ret == -1)
-			break ;
+			break;
 		if (ret == 0)
 			ft_put4str("my_sh: ", "command not found: ", cmd[0], "\n");
 		ft_free(&cmd);

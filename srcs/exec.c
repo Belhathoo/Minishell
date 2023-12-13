@@ -1,16 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: belhatho <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/12 03:52:52 by belhatho          #+#    #+#             */
-/*   Updated: 2022/05/18 07:52:32 by belhatho         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+
+/**
+ * bin_check_ex - bin_check_ex
+ * Description: program description
+ * @exc: exc
+ * @st: st
+ * @input: input
+ *
+ * Return: int
+ */
 
 int	bin_check_ex(char **exc, struct stat st, char ***input)
 {
@@ -22,6 +21,14 @@ int	bin_check_ex(char **exc, struct stat st, char ***input)
 		free_exit();
 	return (1);
 }
+
+
+/**
+ * is_bin - is_bin
+ * @input: input
+ *
+ * Return: int
+ */
 
 int	is_bin(char ***input)
 {
@@ -50,6 +57,14 @@ int	is_bin(char ***input)
 	ft_free(&path);
 	return (0);
 }
+
+
+/**
+ * is_builtin - is_biltuin
+ * @cmds: cmds
+ *
+ * Return: int
+ */
 
 int	is_builtin(char ***cmds)
 {
