@@ -78,10 +78,6 @@ int	is_builtin(char ***cmds)
 	}
 	if (ft_strequ(cmd[0], "env"))
 		return (print_env());
-	if (ft_strequ(cmd[0], "setenv"))
-		return (run_setenv(cmd));
-	if (ft_strequ(cmd[0], "unsetenv"))
-		return (run_unsetenv(cmd));
 	if (ft_strequ(cmd[0], "cd"))
 		return (run_cd(cmd));
 	if (ft_strequ(cmd[0], "echo"))

@@ -24,11 +24,8 @@ void	cd_error(char *path)
  */
 void	ft_chdir(char *path, int print)
 {
-	char	*cwd;
-	char	buff[4097];
 	char	*parsed;
 
-	cwd = getcwd(buff, 4096);
 	if (!chdir(path))
 	{
 		if (print)
@@ -37,7 +34,6 @@ void	ft_chdir(char *path, int print)
 			ft_putendl(parsed);
 			free(parsed);
 		}
-		set_env_var("OLDPWD", cwd);
 	}
 	else
 		cd_error(path);

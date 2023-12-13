@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-/**
- * g_en - g_en programm
-*/
 char **g_env;
 
 
