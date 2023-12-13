@@ -17,7 +17,6 @@ int	isspce(char c)
  */
 void	free_exit(void)
 {
-	ft_free(&g_env);
 	write(1, "\n", 1);
 	exit(0);
 }

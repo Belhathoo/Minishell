@@ -8,33 +8,29 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-extern char **g_env;
 
 void prompt(void);
 
-void parser(char **input);
-char *parse_home(char *path);
+void parser(char **input, char **env);
+char *parse_home(char *path, char **env);
 char *do_path(char *name, char *d_name);
 
-int print_env(void);
-void init_environment(int ac, char **av, char **env);
-char **realloc_env(int size);
+int print_env(char **env);
+int execution(char ***commands, char **env);
+int check_one_cmd(char ***input, char **env);
+int check_exec(char *path, struct stat st, char ***in, char **env);
+int is_bin(char ***input, char **g_env);
+int is_builtin(char ***input, char **env);
+int run(char *cmd, char **input, char **env);
 
-int execution(char ***commands);
-int check_one_cmd(char ***input);
-int check_exec(char *path, struct stat st, char ***in);
-int is_bin(char ***input);
-int is_builtin(char ***input);
-int run(char *cmd, char **input);
-
-int run_cd(char **input);
-void ft_chdir(char *path, int print);
+int run_cd(char **input, char **env);
+void ft_chdir(char *path, int print, char **env);
 int run_echo(char **input);
 int run_setenv(char **input);
 int run_unsetenv(char **input);
 void set_env_var(char *key, char *value);
-char *get_var(char *name);
-int find_var_index(char *var);
+char *get_var(char *name, char **env);
+int find_var_index(char *var, char **g_env);
 
 void ft_signal(int sig);
 void ft_child_signal(int sig);
